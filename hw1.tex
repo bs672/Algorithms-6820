@@ -17,6 +17,36 @@ The half-graph is a bipartite graph with vertex sets $L_0 = \{u_1,\ldots,u_n\}$ 
 (Solution 1 stub)
 \begin{enumerate}
 \item (a)
+
+First it is obvious that there exists a perfect matching for the half graph, since
+$M = \{(u_1,v_1),\ldots,(u_n,v_n)\}$ is a matching containing every vertex in $G$.
+It only remains to be shown that this matching is unique.
+
+The uniqueness of the matching can be shown via induction. Let $P(n)$ be the
+proposition that the half-graph of size $n$ has a unique perfect matching,
+as described above. $P(1)$ is clearly true, because with $n = 1$ there are only
+two vertices with a single edge, so uniqueness of the perfect matching here
+is trivial.
+
+Now suppose that proposition $P(k - 1)$ is true. Consider the half graph $G_k$
+containing $2k$ vertices. By construction $u_k$ has a single neighbor in $G_k$,
+which is $v_k$. This means any perfect matching must involve $u_k$ and $v_k$
+being matched together. Therefore $G_k$ has a unique perfect matching if and
+only if the remaining graph after removing $u_k$, $v_k$, and any adjacent edges
+has a unique perfect matching. Let us call this smaller graph containing
+$2k -2$ vertices $H_k$.
+
+We can observe that $H_k$ is identical to the half graph of size $k - 1$. This
+is because it contains vertices $\{u_1,\ldots,u_{k-1},v_1,\ldots,v_{k-1}\}$ with
+edges satisfying the same equations as for the half graph (the edge set is
+$E = \{(u_i, v_j) | i \leq j\}$). Therefore we know $H_k$ has a unique perfect
+matching given proposition $P(k - 1)$ which we have assumed to be true.
+So $P(k - 1) \implies P(k)$.
+
+We have proven the base case and the inductive case, so we have our desired
+result that the half graph has a unique perfect matching for every $n \in \mathbb{N}$.
+
+
 \item (b)
 \end{enumerate}
 \end{solution}
