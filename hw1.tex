@@ -27,7 +27,46 @@ The half-graph is a bipartite graph with vertex sets $L_0 = \{u_1,\ldots,u_n\}$ 
 (Solution 2 stub)
 \begin{enumerate}
 \item (a)
-\item (b)
+\item First, we will define a \emph{fractional superperfect matching}, which is a matrix $X=(x_{uv})$ with the same constraints as a fractional perfect matching, except that we relax the degree constraint to
+\[\sum_{v\in V} x_{uv} \geq 1\]
+A vertex $v$ where $\sum x_{uv} > 1$ we will call a \emph{supervertex}.
+
+Second, we will define a \emph{search tree} $T$ in a graph $G$ with a fractional superperfect matching $X$ and with respect to a matching $M$ in $\text{Supp}(X)$ as a rooted tree, subgraph of $\text{Supp}(X)$ where:
+\begin{itemize}
+\item The root, $v$ of $T$ is free in $M$
+\item All other vertices $m$ in $T$ are matched
+\item Every path from the root $v$ to any leaf has an odd number of vertices and is $M$-alternating
+\item Vertices an even length away from the $v$ (including $v$ itself) are called \emph{black} and an odd length away are called \emph{white}
+\item All supervertices in $G$ are in the tree, and are black vertices.
+\end{itemize}
+
+We will show that, given a fractional superperfect matching $X$ and a graph $G$ and matching $M$ using at most $n/2$ edges and a tree $T$, we can always find one of:
+\begin{itemize} 
+\item an augmenting path,
+\item a larger search tree $T'$, or
+\item a flower in $T$ such that collapsing its blossom $B$ gives a new, smaller $G/B$ with a fractional superperfect matching $X/B$ and a new search tree $T/B$.
+\end{itemize}
+
+Since other than the root $v$, every vertex in $T$ also has its match in $T$, $|T|$ is odd. Therefore by the odd set constraint, there is a supported edge out of $T$. Consider all such edges. Then there are 3 cases:
+\begin{itemize}
+\item There is a supported edge from a black vertex $b$ to a free vertex $w$. Then the path from $v$ to $b$ to $w$ is an augmenting path ($v$ to $b$ is possibly empty).
+\item There is a supported edge from a black vertex $b$ to a matched vertex $m$. Then a new search tree $T$ can be created by adding the edges $(b,m)$ and $(m, m')$ where $m'$ is matched to $m$. Note that by definition of a serach tree, neither $m$ nor $m'$ is a supervertex.
+\item All supported edges from $T$ to the rest of the graph are from white vertices.
+\end{itemize}
+In this last case we will find a blossom. First we will argue that there is a supported edge between two black vertices. Note that all outgoing edges from black vertices go to either white or black vertices, and that all supervertices are black. So, suppose there were no black-to-black edges; then we have
+\[|W| > \sum_{(b,w): \text{$b$ is black and $w$ is white}} x_{bw} \geq |B|\]
+by degree constraints (the first equality is strict because $W$ has some edges outside of $T$, and the second inequality follows because $B$ may have supervertices). But $|B| = |W| + 1$.
+
+Since we have a black-to-black edge, we can find a blossom. Call the edge $(b_1, b_2)$. Consider the unique simple paths $P_i$, where $P_i$ is the path from the root to $b_i$. Here there are two cases: one of $P_i$ completely contains the other, or not. In first case, without loss of generality say $P_2$ contains $P_1$. Then the path $(P_2, (b_2,b_1))$ is a blossom. Otherwise, suppose that the paths are the same up some vertex $u$. Then the path $(P_1, (b_1, b_2), P'_2)$ is a blossom, where $P'_2$ is the reverse of $P_2$ and stopping at $u$ rather than $v$.
+
+All that remains to be shown is that the new small $G/B$ has a fractional superperfect matching with a matching $M/B$ and new search tree $T/B$.
+
+To show the new $X/B$ is superperfect, we must show all five conditions hold. Symmetry, non-negativity, and supported-on-edges are trivial. To show the odd set constraint, let $S$ be an odd set in $G/B$. If it only contains vertices that also existed in $G$, then the odd set constraint on $X$ implies it for $X/B$. If the odd set $S$ contains the $B$-vertex, note that $S$ minus the $B$-vertex plus all the vertices in $B$ is an odd set in $G$, so the odd-set constraint in $X$ gives it to us in $X/B$. Finally, the degree constraint needs to be checked on the new $B$ vertex. It is just implied by the odd set constraint on $X$.
+
+To show that the new $T/B$ is still a search tree with respect to $M/B$, note that by construction, all outgoing edges from $B$ to $T$ are unmatched. So the $B$ vertex will still live on the black side of $T/B$, perhaps taking the role of $v$ if the flower had no stem, and all other supervertices in $T/B$ are also still on the right side.
+
+The obvious inductive argument then shows that we can find an augmenting path, and note that for a fractional perfect matching (not superperfect) $X$ with supported matching $M$, a search tree can be constructed simply by choosing any free vertex to be $T$. This proves the theorem.
+
 \item (c)
 \end{enumerate}
 \end{solution}
