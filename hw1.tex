@@ -26,8 +26,8 @@ The half-graph is a bipartite graph with vertex sets $L_0 = \{u_1,\ldots,u_n\}$ 
 \begin{solution}
 (Solution 2 stub)
 \begin{enumerate}
-\item (a)
-\item First, we will define a \emph{fractional superperfect matching}, which is a matrix $X=(x_{uv})$ with the same constraints as a fractional perfect matching, except that we relax the degree constraint to
+\item[a] 
+\item[b] First, we will define a \emph{fractional superperfect matching}, which is a matrix $X=(x_{uv})$ with the same constraints as a fractional perfect matching, except that we relax the degree constraint to
 \[\sum_{v\in V} x_{uv} \geq 1\]
 A vertex $v$ where $\sum x_{uv} > 1$ we will call a \emph{supervertex}.
 
@@ -74,7 +74,14 @@ The obvious inductive argument then shows that we can find an augmenting path, a
 (Problem 3 stub)
 \end{problem}
 \begin{solution}
-(Solution 3 stub)
+(We are just showing 3b, from which 3a follows trivially)
+
+First, we will show that player 2 has a winning strategy if the graph has a perfect matching. Their strategy is: whenever player 1 chooses a vertex $v$, choose its match, $v'$. This strategy maintains the invariant that whenever player 1 choose a vertex, its match has not been chosen, so $v'$ is always a legal play. Since player 2 always has a legal play but the graph is finite, player 1 must eventually not have a legal play.
+
+Second, we will show that player 1 has a winning strategy if the graph lacks a perfect matching. They choose any maximum matching $M$ and choose a free vertex $v$, and they play $v$. Player 1's strategy is: whenever player 2 chooses a vertex $m$, take its match $m'$. This strategy maintains the same invariant as above, but it remains to show that this is always possible -- that player 2 must always choose a matched vertex. Suppose at some point player 2 choose a free vertex $w$. This means that the path of choices so far $(v,...,w)$ is augmenting for $M$. But, since $M$ is maximum this is a contradiction. Since player 1 always has a legal play but the graph is finite, player 2 must eventually not have a legal play.
+
+Since whether or not a graph has a perfect matching is decidable in polynomial time (as shown in lecture), this gives a polynomial-time decider for who has the winning strategy.
+
 \end{solution}
 \end{document}
 
