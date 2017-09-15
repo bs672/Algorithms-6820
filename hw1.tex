@@ -1,5 +1,8 @@
 \documentclass{hmcpset}
 \usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{algorithm, algpseudocode}
+\newtheorem{lemma}{Lemma}
 \name{Andrew Bennett, Richard Strong Bowen}
 \class{CS6820}
 \assignment{Problem Set 1}
@@ -48,6 +51,104 @@ result that the half graph has a unique perfect matching for every $n \in \mathb
 
 
 \item (b)
+
+Before we present our algorithm, we will prove two preliminary lemmas, that motivate
+its construction. Given a graph $G = (V, E)$ and a set of vertices $S \subset V$,
+we will use the notation $G - S$ to refer to the graph obtained by removing all
+vertices from $V$ that are in $S$, and all edges from $E$ with an endpoint in $S$.
+
+\begin{lemma}
+  Suppose $G = (L, R, E)$ is a bipartite graph with a unique perfect matching. Then
+  there is at least one vertex in $L$ with degree 1.
+\end{lemma}
+
+\begin{proof}
+  Let $M$ be the unique perfect matching in $G$. We will prove this lemma
+  by contradiction. Suppose every vertex in L had at least
+  degree two. Let us pick an arbitrary vertex $L$, and call this vertex $u$.
+  Suppose we greedily construct a path $P$ starting at $u_0$, by successively picking
+  random unmatched edges from $L$ to $R$, and matched edges from $R$ to $L$, until
+  we cannot extend the path any further.
+  Since we have assumed every vertex $u \in L$ has degree at least two, each $u$
+  must have at least one unmatched edge to a vertex in $R$, and since $M$ is a
+  perfect matching, each vertex $v \in R$ must have a matched edge to a vertex in $L$.
+  Therefore if $P$ ends at a vertex in $R$ there is a matched edge from this vertex
+  to some vertex in $L$ earlier in $P$, and similarly if $P$ ends at a vertex in $L$
+  there is an unmated edge from this vertex to some vertex in $R$ earlier in $P$.
+  In either case by removing the prefix of $P$ up to this prior vertex we obtain an
+  alternating cycle with respect to $M$. Augmenting on this cycle gives a new maximum
+  matching, contradicting that $M$ was unique.
+\end{proof}
+
+\begin{lemma}
+  Suppose $G = (L, R, E)$ is a bipartite graph with a unique perfect matching. Let
+  $u$ be a vertex in $L$ with degree 1, and let $v$ be its neighbor in $R$. Then
+  the graph $G' = G - \{u, v\}$ is also a bipartite graph
+  with a unique perfect matching.
+\end{lemma}
+
+\begin{proof}
+  The fact that there is such a vertex $u$ in $L$ follows from the previous lemma.
+  Since $u$ has degree 1, any perfect matching $M$ must involve $u$ being matched
+  to $v$. In other words, any perfect matching $M$ in $G$ must correspond exactly to
+  a perfect matching $M - (u, v)$ in $G'$, and vice versa. Thus, since $G$ has a
+  unique perfect matching, $G'$ must also have one.
+\end{proof}
+
+These lemmas motivate a simple iterative algorithm for constructing our desired
+functions $g$ and $h$, as follows:
+
+\begin{algorithm}
+  \caption{Map to half-graph}
+  \begin{algorithmic}[1]
+    \Procedure{ConstructMap}{$G$}
+    \State $g\gets$ \Call{CreateEmptyMap}{}
+    \State $h\gets$ \Call{CreateEmptyMap}{}
+    \For{$i \in \{n,\ldots,1\}$}
+      \State $u\gets$ \Call{MinDegreeVertex}{$L$}
+      \State $v\gets$ \Call{PickNeighbor}{$G, u$}
+      \State $g(u)\gets u_i$
+      \State $h(v)\gets v_i$
+      \State $G\gets G - \{u, v\}$
+    \EndFor
+    \State \textbf{return} $g, h$
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+First of all, since each vertex in $\{u_1,\ldots,u_n,v_1,\ldots,v_n\}$
+gets assigned to one vertex in $G$, which is subsequently removed
+from $G$, it is clear that this algorithm defines a one-to-one correspondence
+between the vertices in $G$ and some subgraph of the half-graph.
+It only remains to be shown that the algorithm is polynomial time, and that
+for every $(u, v) \in E$ that $(g(u), h(v))$ is an edge of the half-graph.
+
+The proof that the algorithm is polynomial time is trivial: each iteration
+involves finding a vertex of minimum degree from $L$, picking a neighbor
+of this vertex, making some assignments, and removing some vertices and
+edges from the graph. Each of these parts is at worst $O(n + m)$ depending on
+the data structure used to represent $G$, and the loop is run $O(n)$ times,
+so the complexity of the algorithm is at worst $O(n(n + m))$.
+
+Now we show that the edges in $G$ are mapped by $g$ and $h$ to edges
+in the half-graph. First we can observe that the above two
+lemmas imply that $G$ has a unique perfect matching at the start of each
+iteration of the algorithm, and the vertex $u_i$ of minimum degree in $L$
+that is chosen at each iteration has degree 1 at that iteration.
+
+Now, consider an arbitrary edge $(u, v) \in G$, where $u \in L$ and
+$v \in R$. Let $k$ be the value of the loop variable $i$ at the iteration
+where $u$ is removed from the graph. By construction this means that
+$g(u) = u_k$. Given the previous observation, at the iteration where
+$u$ was mapped to $g$ it had a single neighbor in $R$, which was mapped
+by $h$ to $v_k$. This means all other possible neighbors of $v$ must have
+been removed at previous iterations of the algorithm, and therefore each
+mapped to $v_j$ for some $j > k$. In either case we have $h(v) = v_j$,
+for some $j \ge k$. Thus $(g(u), h(v)) = (u_k, v_j)$ is an edge
+in the half graph, as required.
+
+
+
 \end{enumerate}
 \end{solution}
 \begin{problem}[2]
