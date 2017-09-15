@@ -2,6 +2,7 @@
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{algorithm, algpseudocode}
+\usepackage{enumitem}
 \newtheorem{lemma}{Lemma}
 \name{Andrew Bennett, Richard Strong Bowen}
 \class{CS6820}
@@ -17,8 +18,8 @@ The half-graph is a bipartite graph with vertex sets $L_0 = \{u_1,\ldots,u_n\}$ 
 \end{enumerate}
 \end{problem}
 \begin{solution}
-\begin{enumerate}
-\item (a)
+\begin{enumerate}[label=(\Alph*)]
+  \item 
 
 First it is obvious that there exists a perfect matching for the half graph, since
 $M = \{(u_1,v_1),\ldots,(u_n,v_n)\}$ is a matching containing every vertex in $G$.
@@ -48,7 +49,7 @@ So $P(k - 1) \implies P(k)$.
 We have proven the base case and the inductive case, so we have our desired
 result that the half graph has a unique perfect matching for every $n \in \mathbb{N}$.
 
-\item (b)
+\item
 
 Before we present our algorithm, we will prove two preliminary lemmas, that motivate
 its construction. Given a graph $G = (V, E)$ and a set of vertices $S \subseteq V$,
@@ -69,7 +70,7 @@ vertices from $V$ that are in $S$, and all edges from $E$ with an endpoint in $S
       at least 2.}
   Let us pick an arbitrary vertex $L$, and call this vertex $u_0$.
   Suppose we greedily construct a path $P$ starting at $u_0$, by successively picking
-  random unmatched edges from $L$ to $R$, and matched edges from $R$ to $L$, until
+  arbitrary unmatched edges from $L$ to $R$, and matched edges from $R$ to $L$, until
   we cannot extend the path any further. Let $P = (u_0,\ldots,u_k)$.
   Since we have assumed that every vertex $u \in L$ has degree at least 2, each $u$
   must have at least one unmatched edge to a vertex in $R$, and since $M$ is a
@@ -186,15 +187,18 @@ Remark: The fact that a fractional perfect matching matrix can be expressed as a
 of perfect matching matrices, for bipartite $G$, is the Birkhoff-von Neumann Theorem. The fact is still
 true for non-bipartite $G$, but it is significantly harder to prove, and it is not part of this assignment.
 \end{problem}
+
+
+
 \begin{solution}
-\begin{enumerate}
-\item[a] 
+\begin{enumerate}[label=(\Alph*)]
+\item
 First, we show that the odd set constraints are implied by the other constraints. Let $S$ be an odd set and let $S_L = S \cap L$ and $S_R = S \cap R$. Since $S$ is odd cardinality, $S_L$ and $S_R$ must have different cardinalities; without loss of generality, let $S_L$ be bigger, that is, $|S_L| - |S_R| \geq 1$. Then we have
 \begin{align*}
 \sum_{\substack{v \in S \\ w \not \in S}} x_{vw} &= \sum_{\substack{v \in S_L \\ w \not \in S}} x_{vw} + \sum_{\substack{v \in S_R \\ w \not \in S}} x_{vw} \text{\quad(Because $S_L,S_R$ is a partition)} \\
-&= \left (\sum_{\substack{v \in S_L \\ w \not \in S_L}} x_{vw} - \sum_{\substack{v \in S_L \\ w \in S_R}} x_{vw}\right ) + \left (\sum_{\substack{v \in S_R \\ w \not \in S_R}} x_{vw} - \sum_{\substack{v \in S \\ w \not \in S}} x_{vw}\right ) \text{\quad (By conditioning on $w\in S$)} \\
+&= \left (\sum_{\substack{v \in S_L \\ w \not \in S_L}} x_{vw} - \sum_{\substack{v \in S_L \\ w \in S_R}} x_{vw}\right ) + \left (\sum_{\substack{v \in S_R \\ w \not \in S_R}} x_{vw} - \sum_{\substack{v \in S_R \\ w \in S_L}} x_{vw}\right ) \text{\quad (By conditioning on $w\in S$)} \\
 &= \sum_{\substack{v \in S_L \\ w \not \in S_L}} x_{vw} + \sum_{\substack{v \in S_R \\ w \not \in S_R}} x_{vw} - 2\sum_{\substack{v \in S_R \\ w \in S_L}} x_{vw} \text{\quad (By reflexivity of $X$)}\\
-&\leq \sum_{\substack{v \in S_L \\ w \not \in S_L}} x_{vw} + \sum_{\substack{v \in S_R \\ w \not \in S_R}} x_{vw} - 2\sum_{\substack{v \in S_R \\ w \not \in S_R}} x_{vw} \text {\quad (By nonnegativity of $X$)}\\
+&\geq \sum_{\substack{v \in S_L \\ w \not \in S_L}} x_{vw} + \sum_{\substack{v \in S_R \\ w \not \in S_R}} x_{vw} - 2\sum_{\substack{v \in S_R \\ w \not \in S_R}} x_{vw} \text {\quad (By nonnegativity of $X$)}\\
 & = |S_L| + |S_R| - 2|S_R| = |S_L|-|S_R| \text{\quad (By degree constraint and bipartiteness)}\\
 & \geq 1 \text {\quad (By cardinality argument above)}
 \end{align*}
@@ -209,71 +213,121 @@ due to bipartiteness. The symmetry condition shows $Z=Y^T$. The degree constrain
 
 The reverse direction: suppose $Y$ is nonnegative and doubly stochastic. Then trivially the resulting $X$ is also nonnegative and doubly stochastic by construction, and hence row-stochastic. This gives us the non-negativity and degree constraints. By construction, $X$ is symmetric, which gives us the symmetry constraint. The supported-on-edges constraint is given by the observation that $X$ is exactly the adjacency matrix of a bipartite graph $G$ whose edge weights are given by the matrix $Y$.
 
-\item[b] First, we will define a \emph{fractional superperfect matching}, which is a matrix $X=(x_{uv})$ with the same constraints as a fractional perfect matching, except that we relax the degree constraint to
+\item
+  
+%%% SOLUTION TO 2(B)
+  
+First, we will define a \emph{fractional superperfect matching}, which is a
+matrix $X=(x_{uv})$ with the same constraints as a fractional perfect matching,
+except that we relax the degree constraint to
 \[\sum_{v\in V} x_{uv} \geq 1\]
 A vertex $v$ where $\sum x_{uv} > 1$ we will call a \emph{supervertex}.
 
-Second, we will define a \emph{search tree} $T$ in a graph $G$ with a fractional superperfect matching $X$ and with respect to a matching $M$ in $\text{Supp}(X)$ as a rooted tree, subgraph of $\text{Supp}(X)$ where:
+Second, we will define a \emph{search tree} $T$ in a graph $G$ with a fractional
+superperfect matching $X$ and with respect to a matching $M$ in $\text{Supp}(X)$
+as a rooted tree, subgraph of $\text{Supp}(X)$ where:
+
 \begin{itemize}
 \item The root, $v$ of $T$ is free in $M$
 \item All other vertices $m$ in $T$ are matched
-\item Every path from the root $v$ to any leaf has an odd number of vertices and is $M$-alternating
-\item Vertices an even length away from the $v$ (including $v$ itself) are called \emph{black} and an odd length away are called \emph{white}
+\item Every path from the root $v$ to any leaf has an odd number of vertices
+      and is $M$-alternating
+\item Vertices an even length away from the $v$ (including $v$ itself) are
+      called \emph{black} and an odd length away are called \emph{white}
 \item All supervertices in $G$ are in the tree, and are black vertices.
 \end{itemize}
 
-We will show that, given a fractional superperfect matching $X$ and a graph $G$ and matching $M$ using at most $n/2$ edges and a tree $T$, we can always find one of:
+We will show that, given a fractional superperfect matching $X$ and a graph $G$
+and matching $M$ using strictly fewer than $n/2$ edges and a tree $T$, we can always find
+one of:
+
 \begin{itemize} 
 \item an augmenting path,
 \item a larger search tree $T'$, or
-\item a flower in $T$ such that collapsing its blossom $B$ gives a new, smaller $G/B$ with a fractional superperfect matching $X/B$ and a new search tree $T/B$.
+\item a flower in $T$ such that collapsing its blossom $B$ gives a new,
+      smaller $G/B$ with a fractional superperfect matching $X/B$ and a new search tree $T/B$.
 \end{itemize}
 
-Since other than the root $v$, every vertex in $T$ also has its match in $T$, $|T|$ is odd. Therefore by the odd set constraint, there is a supported edge out of $T$. Consider all such edges. Then there are 3 cases:
+Since other than the root $v$, every vertex in $T$ also has its match in $T$,
+$|T|$ is odd.
+Therefore by the odd set constraint, there is a supported edge out
+of $T$. Consider all such edges. Then there are 3 cases:
+
 \begin{itemize}
-\item There is a supported edge from a black vertex $b$ to a free vertex $w$. Then the path from $v$ to $b$ to $w$ is an augmenting path ($v$ to $b$ is possibly empty).
-\item There is a supported edge from a black vertex $b$ to a matched vertex $m$. Then a new search tree $T$ can be created by adding the edges $(b,m)$ and $(m, m')$ where $m'$ is matched to $m$. Note that by definition of a serach tree, neither $m$ nor $m'$ is a supervertex.
+\item There is a supported edge from a black vertex $b$ to a free vertex $w$.
+      Then the path from $v$ to $b$ to $w$ is an augmenting path ($v$ to $b$
+      is possibly empty).
+\item There is a supported edge from a black vertex $b$ to a matched vertex $m$.
+      Then a new search tree $T$ can be created by adding the edges $(b,m)$ and
+      $(m, m')$ where $m'$ is matched to $m$. Note that by definition of a serach
+      tree, neither $m$ nor $m'$ is a supervertex.
 \item All supported edges from $T$ to the rest of the graph are from white vertices.
 \end{itemize}
-In this last case we will find a blossom. First we will argue that there is a supported edge between two black vertices. Note that all outgoing edges from black vertices go to either white or black vertices, and that all supervertices are black. So, suppose there were no black-to-black edges; then we have
+
+In this last case we will find a blossom. First we will argue that there is a
+supported edge between two black vertices. Note that all outgoing edges from
+black vertices go to either white or black vertices, and that all
+supervertices are black. So, suppose there were no black-to-black edges; then we have
 \[|W| > \sum_{\substack{(b,w)\\ b \in B, w\in W}} x_{bw} \geq |B|\]
-where $W$ are the white vertices and $B$ are the black vertices, by degree constraints (the first equality is strict because $W$ has some edges outside of $T$, and the second inequality follows because $B$ may have supervertices). But $|B| = |W| + 1$.
+where $W$ are the white vertices and $B$ are the black vertices, by degree constraints
+(the first equality is strict because $W$ has some edges outside of $T$, and the
+second inequality follows because $B$ may have supervertices). But $|B| = |W| + 1$.
 
-Since we have a black-to-black edge, we can find a blossom. Call the edge $(b_1, b_2)$. Consider the unique simple paths $P_i$, where $P_i$ is the path from the root to $b_i$. Here there are two cases: one of $P_i$ completely contains the other, or not. In first case, without loss of generality say $P_2$ contains $P_1$. Then the path $(P_2, (b_2,b_1))$ is a flower. Otherwise, suppose that the paths are the same up some vertex $u$. Then the path $(P_1, (b_1, b_2), P'_2)$ is a flower, where $P'_2$ is the reverse of $P_2$ and stopping at $u$ rather than $v$.
+Since we have a black-to-black edge, we can find a blossom. Call the edge $(b_1, b_2)$.
+Consider the unique simple paths $P_i$, where $P_i$ is the path from the root to $b_i$.
+Let $(u_0,\ldots,u_k)$ be the longest common prefix of $P_1$ and $P_2$. We will argue
+that these paths define a flower with $u_k$ as the fulcrum, and and the suffixes of
+the paths along with $u_k$ defining the blossom. Since white to black edges in the tree
+are by construction always matched, there cannot be two separate edges from a white
+edge away from the root. Therefore $u_k$ must be black. Furthermore since the paths
+end at black vertices, the two suffixes together contain an even number of vertices.
+Finally, $(b_1, b_2)$ must be unmatched as at least one of these vertices is
+already matched to a separate white vertex (both cannot be the root). Therefore
+along with the fulcrum these two suffixes joined at their ends by $(b_1, b_2)$
+must define a blossom. 
 
-Let $L$ be the blossom. All that remains to be shown is that the new small $G/L$ has a fractional superperfect matching with a matching $M/L$ and new search tree $T/L$.
+Let $L$ be the blossom. We will now argue that the smaller graph $G/L$ by collapsing
+the blossom to a single vertex has a fractional superperfect $X/L$ (obtained by collapsing
+the rows/columns corresponding to $L$ to a single row/column by summing over them)
+matching with a matching $M/L$ (obtained by removing edges in $L$)
+and new search tree $T/L$ (obtained by collapsing the blossom to a single vertex in $T$).
 
-To show the new $X/L$ is superperfect, we must show all five conditions hold. Symmetry, non-negativity, and supported-on-edges are trivial. To show the odd set constraint, let $S$ be an odd set in $G/L$. If it only contains vertices that also existed in $G$, then the odd set constraint on $X$ implies it for $X/L$. If the odd set $S$ contains the $L$-vertex, note that $S$ minus the $L$-vertex plus all the vertices in $L$ is an odd set in $G$, so the odd-set constraint in $X$ gives it to us in $X/L$. Finally, the degree constraint needs to be checked on the new $L$ vertex. It is just implied by the odd set constraint on $X$.
+To show the new $X/L$ is superperfect, we must show all five conditions hold. Symmetry,
+non-negativity are trivial. In the case of supported edges it follows from the fact
+that the row/column corresponding to $L$ is formed by summation, so if there were no
+edges from a vertex $u$ to any vertex in $L$ then all the prior entries were zero
+(previously supported on edges), so the new corresponding entry remains zero.
+To show the odd set constraint,
+let $S$ be an odd set in $G/L$. If it only contains vertices that also existed in
+$G$, then the odd set constraint on $X$ implies it for $X/L$. If the odd set $S$
+contains the $L$-vertex, then we could form a new set $S' \subset V(G)$ by
+expanding the collapsed $L$ vertex to all the vertices in $L$. This is an odd set
+in $G$ so the sum of the weights out is at least 1, and by construction of $X/L$ the
+sum out of the set is preserved.
 
-To show that the new $T/B$ is still a search tree with respect to $M/B$, note that by construction, all outgoing edges from $B$ to $T$ are unmatched. So the $B$ vertex will still live on the black side of $T/B$, perhaps taking the role of $v$ if the flower had no stem, and all other supervertices in $T/B$ are also still on the right side.
+To show that the new $T/L$ is still a search tree with respect to $M/L$, note that
+all subtrees in $T\\L$ rooted at a vertex in $L$ must have a white
+root (since by construction the parent of every black vertex excluding the root
+is a matched white vertex, but all white vertices in the blossom are matched
+to a black vertex in the blossom). Therefore since the collapsed blossom vertex
+in $T/L$ is black, we do not need to change the colors of its descendants, so
+any prior supervertex remains black.
 
-The obvious inductive argument then shows that we can find an augmenting path, and note that for a fractional perfect matching (not superperfect) $X$ with supported matching $M$, a search tree can be constructed simply by choosing any free vertex to be $T$. This proves the theorem, giving an algorithm like algorithm 2.
+Note as well that since there are fewer than $n/2$ edges in the original matching
+at least one vertex must be free, so it is always possible to choose an initial root
+for the tree.
+This is a valid search tree at this time because there are no supervertices
+at this time (because the original fractional perfect matching is perfect).
+Therefore we can always start off with a valid search tree.
+Since we can only collapse the tree and associated superperfect matching a finite 
+number of times, we must be able to find an augmenting path eventually.
+This path is augmenting with respect to the collapsed matching in the
+collapsed graph after a finite number of bollosom collapses.
+However as proven in lectures $G$ has an augmenting path
+if and only if $G/L$ has an augmenting path, so therefore the original graph
+$G$ must have an augmenting path.
 
-\begin{algorithm}
-  \caption{Find an augmenting path}
-  \begin{algorithmic}[1]
-    \Procedure{FindAugment}{$X$, $M$, $T=B\cup W$}
-    \While{true}
-        \State $e\gets$ \text{some edge out of B, $(b, u)$}
-        \If{$e$ goes to a free vertex}
-            \State \textbf{return} The path from $v$ through $T$ to $u$
-        \EndIf
-        \If{$e$ goes to a matched vertex}
-            \State $T\gets T \cup {e, e'}$
-        \EndIf
-        \If{$e$ goes to a black vertex $b'$}
-            \State \textbf{break}
-        \EndIf
-        \EndWhile
-    \State $L \gets $\quad the blossom L.
-    \State \textbf{return} \Call{FindAugment}{$X/L, M/X, T/X$}
-    \EndProcedure
-  \end{algorithmic}
-\end{algorithm}
-
-By running the loop over all edges and skipping ones which don't have a black endpoint, the loop runs $O(m)$ times. Finding the path to return in $T$ may also take $O(m)$ time. The recursive call is tail-recursive and reduces the size of the graph by at least $1$ so there $O(n)$ calls. Hence this algorithm is $O(m^2n)$. Probably a tighter bound is possible but this is sufficient to show that the algorithm is polynomial.
-
-\item (c)
+\item
 
 \begin{lemma}
   Suppose $X$ a fractional perfect matching for a bipartite graph $G$,
@@ -399,7 +453,7 @@ complexity of our entire algorithm would be $O(mn^2 + m^2\sqrt{n})$.
 \end{enumerate}
 \end{solution}
 \begin{problem}[3]
-(Problem 3 stub)
+(Problem 3)
 \end{problem}
 \begin{solution}
 (We are just showing 3b, from which 3a follows trivially)
