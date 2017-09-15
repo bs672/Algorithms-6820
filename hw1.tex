@@ -17,7 +17,6 @@ The half-graph is a bipartite graph with vertex sets $L_0 = \{u_1,\ldots,u_n\}$ 
 \end{enumerate}
 \end{problem}
 \begin{solution}
-(Solution 1 stub)
 \begin{enumerate}
 \item (a)
 
@@ -48,7 +47,6 @@ So $P(k - 1) \implies P(k)$.
 
 We have proven the base case and the inductive case, so we have our desired
 result that the half graph has a unique perfect matching for every $n \in \mathbb{N}$.
-
 
 \item (b)
 
@@ -152,15 +150,43 @@ mapped to $v_j$ for some $j > k$. In either case we have $h(v) = v_j$,
 for some $j \ge k$. Thus $(g(u), h(v)) = (u_k, v_j)$ is an edge
 in the half-graph, as required.
 
-
-
 \end{enumerate}
 \end{solution}
 \begin{problem}[2]
-(Problem 2 stub)
+Define a fractional perfect matching in a (not necessarily bipartite) graph $G = (V, E)$ to be a matrix
+$X = \left (x_{uv} \right)$, with rows and columns indexed by elements of V , that satisfies:
+\begin{enumerate}
+\item degree constraints: $\sum_{v\in V}x_{uv} = 1$ for all $u \in V$.
+\item odd set constraints: $\sum_{u\in S} \sum_{v \not \in S} x_{uv} \geq 1$ for every set $S$ of odd cardinality.
+\item symmetry: $x_{uv} = x_{vu}$ for all $u, v\in V$
+\item non-negativity: $x_{uv} \geq 0$ for all $u, v \in V$.
+\item supported on edges: $x_{uv} = 0$ if $(u, v) \not \in E$.
+\end{enumerate}
+
+(a) If G is a bipartite graph with bipartition $V = L \cup R$, prove that the odd set constraints
+are implied by the other constraints, and that a matrix $X$ satisfies the definition of fractional perfect
+matching given above, if and only if it has the block form
+\[ X = \begin{pmatrix}0 & Y \\ Y^T & 0 \end{pmatrix},\]
+where $Y$ , the submatrix of entries $x_{uv}$ with $(u, v) \in L \times R$, satisfies the definition of fractional perfect
+matching given in class and in the lecture notes. (Thus, in some sense, the definition of fractionalperfect matchings in this exercise extends the definition for bipartite graphs given in class to the case
+of non-bipartite graphs.)
+
+(b*) For a fractional perfect matching $X$, define its support, Supp$(X)$, to be the set of edges $(u, v)$
+with $x_{uv} > 0$. If $G$ is a graph with $n$ vertices, $X$ is a fractional perfect matching, and $M \subset \text{Supp}(X)$ is
+a matching with strictly fewer than $n/2$ edges, prove that there is an $M$-augmenting path contained in
+Supp$(X)$. For half credit, prove it in the special case that $G$ is bipartite.
+
+(c) Every perfect matching $M$ in $G$ gives rise to a matrix $X(M)$, by setting $x_{uv} = 1$ if edge $(u, v)$
+belongs to $M$ , and $x_{uv} = 0$ otherwise. Call such a matrix a perfect matching matrix. Assuming $G$ is
+bipartite, give an algorithm that takes a matrix $X$ that is a fractional perfect matching, and outputs
+a representation of $X$ as a convex combination of perfect matching matrices. In other words, your
+algorithm’s output should be a list of matchings $M_i$ , and coefficients $c_i \geq 0$, such that $X = \sum_i c_i X(M_i)$.
+You may make use of part (2b) in designing and analyzing your algorithm, even if you didn’t solve (2b).
+Remark: The fact that a fractional perfect matching matrix can be expressed as a convex combination
+of perfect matching matrices, for bipartite $G$, is the Birkhoff-von Neumann Theorem. The fact is still
+true for non-bipartite $G$, but it is significantly harder to prove, and it is not part of this assignment.
 \end{problem}
 \begin{solution}
-(Solution 2 stub)
 \begin{enumerate}
 \item[a] 
 First, we show that the odd set constraints are implied by the other constraints. Let $S$ be an odd set and let $S_L = S \cap L$ and $S_R = S \cap R$. Since $S$ is odd cardinality, $S_L$ and $S_R$ must have different cardinalities; without loss of generality, let $S_L$ be bigger, that is, $|S_L| - |S_R| \geq 1$. Then we have
@@ -345,10 +371,6 @@ involve iterating through every element of $X$. Let us say for the sake of
 argument that we use the Hopcroft-Karp algorithm for constructing the
 perfect matching $M$, which has complexity $O(m\sqrt{n})$. Then the
 complexity of our entire algorithm would be $O(mn^2 + m^2\sqrt{n})$.
-
-
-
-
 
 \end{enumerate}
 \end{solution}
