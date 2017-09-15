@@ -77,8 +77,8 @@ vertices from $V$ that are in $S$, and all edges from $E$ with an endpoint in $S
   must have at least one unmatched edge to a vertex in $R$, and since $M$ is a
   perfect matching, each vertex $v \in R$ must have a matched edge to a vertex in $L$.
   Therefore if $u_k \in L$ there is an unmatched edge
-  $(u_k, u_i)$ for some $i < k$,
-  and if $u_k \in R$ there is a matched edge $(u_k, u_i)$ for some $i < k$.
+  $(u_k, u_i)$ for some $i < k$, and if $u_k \in R$ there is a matched edge
+  $(u_k, u_i)$ for some $i < k$ (otherwise we could extend the path further).
   In either case, $(u_i,\ldots,u_k)$ is an alternating cycle in $G$ with respect
   to $M$. Augmenting $M$ with respect to this cycle gives a new maximum matching,
   contradicting that $M$ was unique.
@@ -204,6 +204,132 @@ To show that the new $T/B$ is still a search tree with respect to $M/B$, note th
 The obvious inductive argument then shows that we can find an augmenting path, and note that for a fractional perfect matching (not superperfect) $X$ with supported matching $M$, a search tree can be constructed simply by choosing any free vertex to be $T$. This proves the theorem.
 
 \item (c)
+
+\begin{lemma}
+  Suppose $X$ a fractional perfect matching for a bipartite graph $G$,
+  $M$ is a perfect matching in $G$ contained in the support of $X$,
+  $X^M$ is the integer fractional perfect matching corresponding to $M$,
+  $0 < \alpha \leq 1$, and $\beta$ is equal to the minimum weight in $\alpha X$
+  of the edges in $M$. Then $\alpha X - \beta X^M = \gamma X^*$ for some
+  $0 < \gamma < 1$ and fractional perfect matching $X^*$, unless $X = X^M$.
+\end{lemma}
+
+\begin{proof}
+
+  We need to argue that there exists a $X^*$ satisfying the fractional
+  perfect matching and corresponding $\gamma$.
+  Firstly, we can observe that since $\beta$ is the minimum element of
+  $\alpha X$ contained in $M$, $\alpha \geq \beta$. However $\alpha = \beta$
+  if and only if the minimum weight of the matched edges in $X$ is 1, meaning
+  that $X = X^M$. But are only required to construct $X^*$ and $\gamma$ if
+  this is not true, so henceforth we will assume instead that $\alpha > \beta$.
+
+  The degree constraints require that every row and column in $X^*$ add up to
+  1. Since $X$ and $X^M$ satisfy these constraints, it
+  must be the case that every row and column in $\alpha X - \beta X^M$
+  add up to $\alpha - \beta$. Therefore if we set $\gamma = \alpha - \beta$,
+  then $X^* = \frac{\alpha}{\gamma} X - \frac{\beta}{\gamma} X^M$ must
+  also satisfy the degree constraints. Since $1 \geq \alpha > \beta > 0$, it must
+  be the case that $\gamma$ defined this way is between 0 and 1.
+  
+  We will finally argue that $\gamma$ and $X^*$ defined this way satisfy
+  the remaining fractional perfect matching constraints. First of all, since
+  $X$ and $X^M$ are both symmetrical matrices, $X^*$ is trivially symmetrical
+  as well so the symmetry constraints are satisfied. Secondly, since $X$
+  and $X^M$ satisfy non-negativity, the support of $X^M$ is a subset of
+  the support of $X$ by construction, and $\beta$ is defiend as the minimum
+  element in $\alpha X$ overlapping with the support of $X^M$, it must
+  be the case that every entry in
+  $\alpha X - \beta X^M$ is non-negative. Therefore $X^*$ must satisfy
+  the non-negativity constraints since
+  $\gamma > 0$. Thirdly, for every $(u, v) \notin E$, $X_{uv} = X^M_{uv} = 0$
+  since $X$ and $X^M$ satisfy the supported on edges constraints.
+  Therefore $X^*_{uv} = 0$, so $X^*$ is also supported on edges. Finally, given
+  the result of 2(a), since $G$ is bipartite and all other constraints
+  are satisfied, $X^*$ must also satisfy the odd-set constraints.
+  Therefore since all constraints are satisfied, $X^*$ must be a fractional
+  perfect matching.
+\end{proof}
+
+Given this lemma and the result of 2(b), a polynomial time algorithm for
+converting a fractional perfect matching $X$ to a convect combination of perfect
+matchings, follows naturally, as follows below.
+
+\begin{algorithm}
+  \caption{Construct perfect matching convex combination}
+  \begin{algorithmic}[1]
+    \Procedure{ConstructConvexCombination}{$X$}
+    \State $i\gets 0$
+    \While{true}
+    \State $M\gets$ \Call{BuildPerfectMatching}{$X$}
+    \State $X_i\gets$ \Call{MatchingToMatrix}{$M$}
+      \State $(u, v)\gets$ \Call{MinWeightedMatchedEdge}{$X,M$}
+      \State $\lambda_i\gets X_{uv}$
+      \State $X\gets X - \lambda_i X_i$
+      \If{$X = 0$}\Comment{If all entries in X are zero}
+        \State \textbf{break}
+      \EndIf
+      \State $i\gets i + 1$
+    \EndWhile
+    \State \textbf{return} $\{(\lambda_0, X_0),\ldots,(\lambda_i, X_i)\}$
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+To argue the correctness of this algorithm, we can first observe that as a loop
+invariant at the start of each iteration of the while loop $X = \alpha X'$ for
+some fractional perfect matching $X'$ and some $0 < \alpha \leq 1$. This
+is obviously true at the start of the first iteration with $\alpha = 1$. To
+see that it is true in subsequent iterations note that the subtraction performed
+on line 8 corresponds to the form $\alpha X - \beta X^M$ appearing in the above
+lemma, with each variable satisfying the conditions in the lemma. In addition, as soon
+as $X = X_i$ (corresponding to $X = X^M$ in the lemma) we break out
+of the loop, meaning that this could never have been true before the start
+of an iteration. Therefore the loop invariant follows from the lemma.
+
+Secondly, we argue that the perfect matching $M$ from the support of $X$
+on line 4 can always be constructed. Since $X = \alpha X'$
+for some fractional perfect matching $X'$ with $\alpha > 0$, the support
+of $X$ is the same as the support of $X'$, and is non-zero.
+The result of 2(b) says that if we have a non-perfect
+matching contained in the support of $X$ an augmenting path with respect to
+that mataching can be found. This means any non-perfect matching in the support
+of $X$ is non-maximal, so there is a perfect matching. Thus $M$ can be constructed
+using any subroutine for constructing a maximal matching in a bipartite graph
+(e.g. Hopcroft-Karp algorithm).
+
+Thirdly, we argue that the algorithm always terminates. Each iteration of the
+algorithm involves setting $\lambda_i$ to the value of the minimum matched
+edge in $X$. Therefore subtracting $X$ by $\lambda_i X_i$ must strictly reduce
+the size of the support of $X$. Therefore there can only be a finite number
+of iterations before $X$ becomes 0.
+
+Fourthly, we argue that the algorithm returns a convex combination of perfect
+matchings adding up to $X$. Clearly by construction $X = \sum_{i = 0}^n{\lambda_i X_i}$
+where $n$ is the number of weight-matching pairs returned by the algorithm.
+This is because the algorithm terminates when $X$ is exactly equal to 0.
+In addition, because at each iteration $X = \alpha X'$, and each weight is
+defined as a value in $X$, each weight must satisfy $0 < \lambda \leq 1$.
+Also, by construction, each $X_i$ is a perfect matching matrix.
+Finally, because each row and column of the original $X$ sums to 1,
+and each row of column of each $X_i$ sum to 1, given that
+$X = \sum_{i = 0}^n{\lambda_i X_i}$ it must be the case that the weights
+sum to 1. Therefore these weights and matrices returned by the algorithm
+represent $X$ as a convex combination of perfect matchings, as required.
+
+Finally, we argue that this algorithm is polynomial time. Since each loop
+of the algorithm reduces the size of the support of $X$, there can be at
+most $m$ iterations. Every operation in the loop except for constructing
+the perfect matching is obviously at worst $O(n^2)$, since at worst they
+involve iterating through every element of $X$. Let us say for the sake of
+argument that we use the Hopcroft-Karp algorithm for constructing the
+perfect matching $M$, which has complexity $O(m\sqrt{n})$. Then the
+complexity of our entire algorithm would be $O(mn^2 + m^2\sqrt{n})$.
+
+
+
+
+
 \end{enumerate}
 \end{solution}
 \begin{problem}[3]
