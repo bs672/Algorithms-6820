@@ -57,6 +57,15 @@ result that the half graph has a unique perfect matching for every $n \in \mathb
 (Solution 2 stub)
 \begin{enumerate}
 \item[a] 
+First, we show that the odd set constraints are implied by the other constraints. Let $S$ be an odd set and let $S_L = S \cap L$ and $S_R = S \cap R$. Since $S$ is odd cardinality, $S_L$ and $S_R$ must have different cardinalities; without loss of generality, let $|S_L| - |S_R| \geq 1$. Then we have
+\begin{align*}
+\sum_{\substack{v \in S \\ w \not \in S}} x_{uv} &= \sum_{\substack{v \in S_L \\ w \not \in S}} x_{uv} + \sum_{\substack{v \in S_R \\ w \not \in S}} x_{uv} \text{\quad(Because $S_L,S_R$ is a partition)} \\
+&= \left (\sum_{\substack{v \in S_L \\ w \not \in S_L}} x_{uv} - \sum_{\substack{v \in S_L \\ w \in S_R}} x_{uv}\right ) + \left (\sum_{\substack{v \in S_R \\ w \not \in S_R}} x_{uv} - \sum_{\substack{v \in S \\ w \not \in S}} x_{uv}\right ) \text{\quad (By conditioning on $w\in S$)} \\
+&= \sum_{\substack{v \in S_L \\ w \not \in S_L}} x_{uv} + \sum_{\substack{v \in S_R \\ w \not \in S_R}} x_{uv} - 2\sum_{\substack{v \in S_R \\ w \in S_L}} x_{uv} \text{\quad (By reflexivity of $X$)}\\
+&\leq \sum_{\substack{v \in S_L \\ w \not \in S_L}} x_{uv} + \sum_{\substack{v \in S_R \\ w \not \in S_R}} x_{uv} - 2\sum_{\substack{v \in S_R \\ w \not \in S_R}} x_{uv} \text {\quad (By nonnegativity of $X$)}\\
+& = |S_L| + |S_R| - 2|S_R| = |S_L|-|S_R| \text{\quad (By degree constraint and bipartiteness)}\\
+& \geq 1 \text {\quad (By cardinality argument above)}
+\end{align*}
 \item[b] First, we will define a \emph{fractional superperfect matching}, which is a matrix $X=(x_{uv})$ with the same constraints as a fractional perfect matching, except that we relax the degree constraint to
 \[\sum_{v\in V} x_{uv} \geq 1\]
 A vertex $v$ where $\sum x_{uv} > 1$ we will call a \emph{supervertex}.
