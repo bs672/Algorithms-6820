@@ -35,27 +35,40 @@ $S' = S \setminus \{s\}$, and $T' = T \setminus \{t\}$, $V' = S' \cup T'$, and
 $E' = \{(u, v) \mid (u, v) \in E(G^*),\ u \neq s,\ v \neq t\}$.
 Furthermore, for every vertex $u \in V'$ we will define $k_{S'}(u)$, $k_{T'}(u)$, and $k_{V'}(u)$
 to be the number of vertices in $S'$, $T'$, and $V'$ respectively that $u$ has a directed
-edge to.  The capacity of the cut is as follows:
+edge to. Note that obviously for every vertex $k_{S'}(u) + k_{T'}(u) = k_{V'}(u)$.
+The capacity of the cut is as follows:
 
 \begin{align*}
   c(S, T) &= \sum_{u \in S'}{c(u, t)} + \sum_{v \in T'}{c(s, v)} + \sum_{u \in S',\ v \in T',\ (u, v) \in E'}{c(u, v)} \\
-          &= \sum_{u \in S'}{m + 2d - k_{V'}(u)} + \sum_{v \in T'}{m} + \sum_{u \in S',\ v \in T',\ (u, v) \in E'}{1} \\
+          &= \sum_{u \in S'}{(m + 2d - k_{V'}(u))} + \sum_{v \in T'}{m} + \sum_{u \in S',\ v \in T',\ (u, v) \in E'}{1} \\
           &= |S'|(m + 2d) - \sum_{u \in S'}{k_{V'}(u)} + |T'|m + \sum_{u \in S'}{k_{T'}(u)} \\
           &= |V'|m + 2|S'|d - \sum_{u \in S'}{k_{S'}(u)} \\
           &= |V'|m + 2|S'|d - 2|S'|D(S') \\ 
           &= |V'|m + 2|S'|(d - D(S')) \\ 
 \end{align*}
-where $D(S')$ refers to the average degree of the vertices in the subgraph defined by
-the vertices in $S'$.
+where $m$ refers to the number of edges in the original graph $G$, and
+$D(S')$ refers to the average degree of the vertices in the subgraph of $G$
+defined by taking the vertices in $S'$, and all edges with both endpoints in $S'$.
 
 Since $|V'|m$ is a constant for all cuts, the cut capacity will be minimized when
-$|S'|(d - D(S'))$ is minimized. This gives a natural algorithm for finding a dense subgraph:
-run any max flow algorithm on $G^*$, and compute a corresponding minimum
-cut $c(S, T)$. If the value of the maximum flow is less than $|V'|m$ then $S'$ defines
+$|S'|(d - D(S'))$ is minimized. Furthermore, by definition the value of the cut
+is less than $|V'|m$ if and only if the subgraph of $G$ defined by $S'$ has
+average degree greater than $d$.
+
+This gives a natural algorithm for finding a dense subgraph: run any max flow algorithm
+on $G^*$ to calculate a maximum flow, and then compute a corresponding minimum
+cut $c(S, T)$. If the value of the max flow / min cut is less than $|V'|m$ then $S'$ defines
 a subgraph of $G$ with average degree greater than $d$. Otherwise no such dense subgraph
 exists, because if there was one then it would give a smaller cut.
 
-TODO: maybe say something about computing a minimum cut?
+To analyze the running time of the algorithm, we need to specify the procedure used to
+calculate the maximum flow and a corresponding minimum cut. For maximum flow calculation
+we can use Dinitz's algorithm, which has a running time of $O(mn^2)$. For calculating
+a minimum cut given this maximum flow, we calculate the residual graph $G^*_f$ using the
+maximum flow $f$, and calculate the set $S'$ of all vertices reachable from $s$ in $G^*_f$.
+As proven in lectures in the derivation of the max-flow min-cut theorem, this defines
+a minimum cut. Calculating reachability can trivially be computed in $O(m + n)$. Therefore
+the overall running time of our algorithm is polynomial.
 
 \section{Problem 2a}
 
