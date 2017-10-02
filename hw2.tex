@@ -100,9 +100,21 @@ After $\sqrt{m}$ phases of Dinitz, the shortest augmenting path has length
 $d(t) \geq \sqrt{m}$. This implies that $|f^*| - |f| \geq \sqrt{m}$. Each
 additional iteration increases the flow by at least 1, so there are at most
 $\sqrt{m}$ more phases go to.
-
 \subsection*{2d}
-
+Define $d(i)$ as the distance from $s$ to $i$ in $G_f$ and $D_j = \{v_i: d(i) = j \}$. 
+\begin{lemma} Let $G$ be a graph with $0-1$ capacities, $f$ a flow in $G$ such that 
+$G_f$ is $0-1$ and $d_t$ the distance from $s$ to $t$ in $G_f$. Only less than half 
+of $\{D_i\}$ can have more than $2\cdot \frac{n}{d_t}$ vertices.\end{lemma}
+\begin{proof}
+By the end of each iteration, the cardinality of $\{D_i\}$ is always $d(t)$. 
+If there are half or more $D_i$'s that has more than $2\frac{n}{d(t)}$ vertices, 
+then $$\text{Total Vertices} \geq (2\frac{n}{d(t)} + 1) * \frac{1}{2} d(t) 
+= n + \frac{1}{2} d(t) > n$$ which yields desirable contradiction. 
+\end{proof}
+After $2n^{2/3}$ iterations of Dinitz, the shortest path has length $d(t)\geq 2n^{2/3}$. 
+There exist two consecutive $D_j$ and $D_{j+1}$ that both have less than $n^{1/3}$ vertices.
+Therefore, the number of edges cross from $D_j$ to $D_{j+1}$ is less than $n^{2/3}$.
+Hence the algorithm can run at most another $n^{2/3}$ iterations. The total runtime is $O(n^{2/3})$.
 \section*{Problem 3}
 
 \section*{Problem 4}
