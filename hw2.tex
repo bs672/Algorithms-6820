@@ -72,8 +72,35 @@ the overall running time of our algorithm is polynomial.
 
 \section*{Problem 2}
 \subsection*{2a}
+We can maintain an invariant that $c'$ is always $0-1$. The fact of this
+invariant also preserves the $0-1$ property for $G_f$, because $\delta(P) = 1$,
+that is, the update step can only take an edge, delete it, and add in its
+reversal to the graph with capacity $1$. But, $\delta(P)$ being $1$ also
+maintains the $c' \in \{0,1\}$ invariant for the same reason.
 \subsection*{2b}
+In the entire run of the blocking flow algortihm, the block of code that
+augments $h$ using $P$ does at most $O(1)$ work per edge in the graph because
+the entire path $P$ is deleted from $G'$. Each push onto the stack corresponds
+to an edge and only a single time per edge. Each edge is deleted at most once
+during the popping phase, and each vertex is deleted at most once.
+Initialization is $O(m)$ for the reasons given in the notes. So, the total time
+is $O(m+n) = O(m)$.
 \subsection*{2c}
+\begin{lemma} Let $G$ be a graph with $0-1$ capacities and $f$ a flow in $G$
+such that $G_f$ is $0-1$. Let $f^*$ be a maximum flow. Let $k=|f^*| - |f|$.
+Then $f^*-f$ has a path of length at most
+$m/k$. \end{lemma}
+\begin{proof}
+Consider the augmenting flow $|f^*| - |f|$. Since the capacities of $G_f$ are
+at most $1$, this flow must have at least $k$ edge-disjoint paths.  Hence some
+path must have at most $m/k$ edges, or else the union of the paths would have
+more than $m$ edges.
+\end{proof}
+After $\sqrt{m}$ iterations of Dinitz, the shortest augmenting path has length
+$d(t) \geq \sqrt{m}$. This implies that $|f^*| - |f| \geq \sqrt{m}$. Each
+additional iteration increases the flow by at least 1, so there are at most
+$\sqrt{m}$ paths to go.
+
 \subsection*{2d}
 
 \section*{Problem 3}
