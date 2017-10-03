@@ -99,8 +99,9 @@ $m/k$. \end{lemma}
 Consider the augmenting flow $f^* - f$, which has value $k$. Since $f$ is
 integral and there is an integral max flow, $f*-f$ is integral. Since $G'$ is
 $0-1$, we have that $f^* - f$ has $k$ saturated edges out of $s$. Considering
-$f^* - f$ as a sum of paths and cycles, we see that its paths consist of these
-$k$ paths, each of which has flow $1$ (plus possibly some cycles). Since $G'$
+$f^* - f$ as a sum of paths and cycles, we see that it can be decomposed
+as $k$ paths prefixed by these $k$ saturated edges each with a flow of $1$
+(plus possibly some cycles). Since $G'$
 has maximum (residual) capacity $1$, no edge appears in two of these paths.
 Therefore at least one of these paths must have no more than $m/k$ edges, or
 else the union of the paths would have more than $m$ edges, giving a
