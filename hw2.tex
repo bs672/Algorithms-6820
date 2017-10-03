@@ -92,17 +92,19 @@ is $O(m+n) = O(m)$.
 \subsection*{2c}
 
 \begin{lemma} Let $G$ be a graph with $0-1$ capacities and $f$ a flow in $G$
-such that $G_f$ is $0-1$. Let $f^*$ be a maximum flow. Let $k=|f^*| - |f|$.
-Then $f^*-f$ has an $s$-$t$ path of length at most
+such that $G_f$ is $0-1$. Let $f^*$ be a maximum, integral flow. Let $k=|f^*| -
+|f|$.  Then $f^*-f$ has an $s$-$t$ path of length at most
 $m/k$. \end{lemma}
 \begin{proof}
-Consider the augmenting flow $f^* - f$. By lemma the flow can be divided into
-$s$-$t$ paths and cycles, and given that the flow and graph are both 0,1-valued it
-is trivial to argue that we can come up with such a division where all
-$s$-$t$ paths are 1-valued. Furthermore since all capacities are 1, these paths
-must be edge disjoint, so $G_f$ contains $|f^*| - |f| = k$ edge-disjoint $s$-$t$ 
-paths. Therefore at least one of these paths must have no more than $m/k$ edges,
-or else the union of the paths would have more than $m$ edges, giving a contradiction.
+Consider the augmenting flow $f^* - f$, which has value $k$. Since $f$ is
+integral and there is an integral max flow, $f*-f$ is integral. Since $G'$ is
+$0-1$, we have that $f^* - f$ has $k$ saturated edges out of $s$. Considering
+$f^* - f$ as a sum of paths and cycles, we see that its paths consist of these
+$k$ paths, each of which has flow $1$ (plus possibly some cycles). Since $G'$
+has maximum (residual) capacity $1$, no edge appears in two of these paths.
+Therefore at least one of these paths must have no more than $m/k$ edges, or
+else the union of the paths would have more than $m$ edges, giving a
+contradiction.
 \end{proof}
 
 After the first $\sqrt{m}$ phases of Dinitz, the shortest augmenting path has length
