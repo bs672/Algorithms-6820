@@ -148,19 +148,42 @@ Let G = (V,E) denote the original graph and G' = (V,E') denote the graph with th
 \While{$|C| < k$}
 \State Find an s-t path P in G using BFS
 \State Find the first unreachable node in P by using binary search with PING(v) as the comparator. Specifically, find the nodes u and v such that u is immediately before v in the s-t path and PING(v) returns no while PING(u) returns yes
-\State Add v to C
-\State Delete edge (u,v) from G
+\State Add $(u,v)$ to $C$
+\State Delete edge $(u,v)$ from $G$
 \EndWhile
 \State Let R = \{\}
 \State Use BFS on G, starting from the source, to find all nodes reachable from s. Add these to R
-\State Return set of nodes U = E\textbackslash R
+\State Return set of nodes U = V\textbackslash R
 \end{algorithmic}
 \end{algorithm}
 
-There are only k iterations of the while loop. This is because of the min-cut max-flow theorem: since we know that the max flow is k, the size of the min cut must also be k. We are always deleting an edge from the min cut in each iteration, since any s-t path must pass through the min cut and we are specifically deleting the edge between the first unreachable node and its predecessor, which must necessarily be on the min cut. Coversely, we also know that any edge in the min cut must necessarily be on an s-t path because the problem invariant states that each node in G is in an s-t path. Each iteration breaks one or more s-t paths, and after deleting k edges we know there are no more s-t paths in G, since the entire min cut has been destroyed. In each iteration we use PING(v) O(log n) times, because we are using it in a binary search manner on a path of nodes with maximum length n. So this gives us a total of O(k log n) pings. All other operations such as BFS do not use PING(v) so they are excluded from this analysis.\\
-\\
-To show that the set of returned edges is indeed the set of unreachable edges, we must first prove that the set of edges we deleted is the same as the attacker. This is true because on every s-t path, we find the first node v that is unreachable, and delete the edge leading to it. This must be the same edge as the attacker deleted because if it were any other edge, then either node v would be reachable, or it be uncreachable but not the first unreachable node in the path. Since we have deleted all of the same edges as the attacker, at the end of the while loop, G is disjointed with no s-t path lefts. This means that all the nodes reachable from the source in our modified G are the same as the reachable nodes in G'. Hence, when we run BFS in step 9, we correctly find all the reachable nodes. We exclude these from E to return U, the set of uncreachable nodes.
-\\
+There are only k iterations of the while loop. This is because of the min-cut
+max-flow theorem: since we know that the max flow is k, the size of the min cut
+must also be k. We are always deleting an edge from the min cut in each
+iteration, since any s-t path must pass through the min cut and we are
+specifically deleting the edge between the first unreachable node and its
+predecessor, which must necessarily be on the min cut. Coversely, we also know
+that any edge in the min cut must necessarily be on an s-t path because the
+problem invariant states that each node in G is in an s-t path. Each iteration
+breaks one or more s-t paths, and after deleting k edges we know there are no
+more s-t paths in G, since the entire min cut has been destroyed. In each
+iteration we use PING(v) $O(log n)$ times, because we are using it in a binary
+search manner on a path of nodes with maximum length n. So this gives us a
+total of $O(k log n)$ pings. All other operations such as BFS do not use PING(v)
+so they are excluded from this analysis.
+
+To show that the set of returned edges is indeed the set of unreachable edges,
+we must first prove that the set of edges we deleted is the same as the
+attacker. This is true because on every s-t path, we find the first node $v$ that
+is unreachable, and delete the edge leading to it. This must be the same edge
+as the attacker deleted because if it were any other edge, then either node $v$
+would be reachable, or it be uncreachable but not the first unreachable node in
+the path. Since we have deleted all of the same edges as the attacker, at the
+end of the while loop, $G$ is disjointed with no s-t path lefts. This means that
+all the nodes reachable from the source in our modified $G$ are the same as the
+reachable nodes in G'.  Hence, when we run BFS in step 9, we correctly find all
+the reachable nodes. We exclude these from $V$ to return $U$, the set of
+unreachable nodes.
 
 \section*{Problem 4}
 
