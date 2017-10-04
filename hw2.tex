@@ -73,10 +73,11 @@ the overall running time of our algorithm is polynomial.
 \section*{Problem 2}
 
 \subsection*{2a}
-We can maintain an invariant that $c'$ is always $0-1$. The fact of this
+We can maintain an invariant that $c'$ (refering to the variable
+in Dinitz's algorithm) is always $0-1$. The fact of this
 invariant also preserves the $0-1$ property for $G_f$, because $\delta(P) = 1$,
 that is, the update step can only take an edge, delete it, and add in its
-reversal to the graph with capacity $1$. But, $\delta(P)$ being $1$ also
+reversal to the graph with capacity $1$. Conversely, $\delta(P)$ being $1$ also
 maintains the $c' \in \{0,1\}$ invariant for the same reason.
 
 \subsection*{2b}
