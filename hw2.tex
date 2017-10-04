@@ -141,38 +141,51 @@ of phases is $O(n^{2/3})$.
 
 \section*{Problem 3}
 
-Let G = (V,E) denote the original graph and G' = (V,E') denote the graph with the k edges destroyed.
 \begin{algorithm}[H]
 \caption{}
 \begin{algorithmic}[1]
-\State Initialize C = \{\}
+\Procedure{Find All Unreachable Nodes}{$G$}
+\State Initialize $C = \{\}$
 \While{$|C| < k$}
-\State Find an s-t path P in G using BFS
-\State Find the first unreachable node in P by using binary search with PING(v) as the comparator. Specifically, find the nodes u and v such that u is immediately before v in the s-t path and PING(v) returns no while PING(u) returns yes
+\State Find an $s$-$t$ path $P$ in $G$ using BFS
+\State Find first unreachable node in $P$ using binary search with PING calls
+\State Let $v$ be first unreachable node, $u$ be the previous node in $P$
 \State Add $(u,v)$ to $C$
 \State Delete edge $(u,v)$ from $G$
 \EndWhile
-\State Let R = \{\}
-\State Use BFS on G, starting from the source, to find all nodes reachable from s. Add these to R
-\State Return set of nodes U = V\textbackslash R
+\State Run BFS on $G$ starting from $s$ to find all reachable nodes
+\State Let $R$ be set of reachable nodes from previous step
+\State \Return $V(G) \setminus R$
+\EndProcedure
 \end{algorithmic}
 \end{algorithm}
+
+To clarify step 5 of the algorithm,
+we maintain a range of possible indices in $P$ where the first
+unreachable node could be located (initially all of $P$), and in each iteration
+of the binary search PING the node in the center (call this node $u_c$). If $u_c$
+is unreachable then the first unreachable node must be located in the first half
+of $P$ (including $u_c$), else it is in the second half of $P$ (not including $u_c$).
+This means we can cut the search space in half in each iteration of binary search
+with a single call to PING.
 
 We will argue the invariant that $C$ grows by one each iteration, and that it
 is a subset of the attacker's cut. Whenever $|C| < k$, $C$ does not cut $s$
 from $t$: This is because of the min-cut max-flow theorem: since we know that
 the max flow is $k$, the size of the min cut must also be $k$. Hence when $|C| <
 k$, there is an $s-t$ path, so the BFS will succeed. It's clear that $(u, v)$
-was in the attacker's cut, so the loop body maintains the invariant.
+was in the attacker's cut, because otherwise $v$ would be reachable since
+$u$ is reachable, $(u, v) \in E$, and removing edges cannot make any previously
+unreachable nodes reachable. Therefore the loop body maintains the invariant.
 
 Now, let's count the number of PING$(v)$ calls.  There are only k iterations of
 the while loop.  In each iteration we use PING$(v)$ $O(\log n)$ times, because we
 are using it in a binary search manner on a path of nodes with maximum length
-n. So this gives us a total of $O(k \log n)$ pings.
+$n$. So this gives us a total of $O(k \log n)$ pings.
 
 When the while loop terminates, $|C| = k$ and $C$ is a subset of the attacker's
 cut edges, so $C$ must be equal to the attacker's cut. Hence, when we run BFS
-in step 9, we find all the reachable nodes. The complement of this is the
+in step 10, we find all the reachable nodes. The complement of this is the
 unreachable nodes.
 
 \section*{Problem 4}
