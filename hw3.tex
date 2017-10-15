@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{amsthm}
 \usepackage{algorithm, algpseudocode}
 \usepackage{enumitem}
@@ -15,6 +16,35 @@ CS 6820 Problem Set 3
 \section*{Problem 1}
 \subsection*{1a}
 \subsection*{1b}
+Let $P = \{x \in \mathbb{R}^n | Ax \leqslant b\}$. We will construct $Q = \{y \in \mathbb{R}^{2n} | A'x \leqslant b'\} $ such that $Q$ is feasible if and only if $P$ is, by constructing $A'$ and $b'$. Let
+\[ A' = \begin{bmatrix} A & -A \\ \multicolumn{2}{c}{-I_{2n}} \end{bmatrix}\]
+(where $I_k$ means the $k \times k$ identity matrix) and
+\[ b' = \begin{bmatrix} b \\ \vec0_{2n} \end{bmatrix} \] 
+(where $\vec 0_k$ means the $k$-element all-zeros column vector). This transform is clearly polynomial-time, and ensures $Q$ is a subset of the positive orthant because of the last $2n$ constraints.
+
+First we show that $P$ being feasible implies that $Q$ is. Suppose $x \in P$. We will produce a $y\in \mathbb{R}^{2n}$ which is in $Q$. Index $y$ as:
+\[ y = \begin{bmatrix} y^+ \\ y^- \end{bmatrix} = \begin{bmatrix} y^+_1 \\ \vdots \\ y^+_n \\ y^-_1 \\ \vdots \\ y^-_n \end{bmatrix}\]
+and set
+\[y^+_i = \begin{cases} x_i & \quad \text {$x_i$ is nonnegative} \\ 0 & \quad \text {otherwise} \end{cases}\]
+and
+\[y^+_i = \begin{cases} -x_i & \quad \text {$x_i$ is negative} \\ 0 & \quad \text {otherwise} \end{cases}.\]
+Note that $y \geqslant 0$ and $x = y^+ - y^-$. Then
+\begin{align*}
+A'y &= \begin{bmatrix} A & -A \\ \multicolumn{2}{c}{-I_{2n}} \end{bmatrix} \begin{bmatrix} y^+ \\ y^- \end{bmatrix} \\
+&= \begin{bmatrix} Ax \\ -y \end{bmatrix} \\
+&\leqslant \begin{bmatrix} b \\ \vec{0}_{2n} \end{bmatrix} \quad \text {(since $x \in P$ and $y$ is nonnegative)}\\
+&= b'
+\end{align*}
+Hence $y \in Q$.
+
+Second we show that $Q$ being feasible imples that $P$ is. Suppose $y\in Q$. We will produce an $x \in \mathbb{R}^{2n}$ which is in $P$. Index $y$ as above and let $x = y^+ - y^-$. Then we have this chain of implications
+\begin{align*}
+&\begin{bmatrix} A & -A \\ \multicolumn{2}{c}{-I_{2n}} \end{bmatrix} \begin{bmatrix} y^+ \\ y^- \end{bmatrix} \leqslant b' \quad \text{(since $y \in Q$)}\\
+\implies & A(y^+ - y^-) \leqslant b \quad \text{(Ignoring the last $2n$ rows)}\\
+\implies & Ax \leqslant b
+\end{align*}
+Hence $x \in Q$.
+
 \subsection*{1c}
 \subsection*{1d}
 \subsection*{1e}
