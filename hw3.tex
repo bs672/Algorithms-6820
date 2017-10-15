@@ -15,6 +15,16 @@ CS 6820 Problem Set 3
 \end{flushright}
 \section*{Problem 1}
 \subsection*{1a}
+\begin{lemma} For an integer-value invertible $n\times n$ matrix $T$, $|\text{det}(T)| \geq 1$ and  $|\text{det}(T)| \leq (nU)^n$ \end{lemma}\begin{proof} For a $1\times 1$ matrix $T = [x]$, we have $|\text{det}(T)|= |x|\leq |x|$ and $|\text{det}(T)| = |x| \geq 1$ because $T$ is integer-valued. For the induction step, suppose the statement is true for matrices whose sizes are $n\times n$,$n\in\{1,2,3..k\}$. Consider an invertible $(k+1)\times(k+1)$ matrix T. 
+\begin{align*}
+\text{det}(T) &= \sum_{i=1}^{k+1} (-1)^{i-1}\text{det}(A_i)\cdot T_{1i}\\
+|\text{det}(T)|&\leq |\sum_{i=1}^{k+1} (-1)^{i-1}\text{det}(A_i)\cdot T_{1i}|\\
+&\leq \sum_{i=1}^{k+1}(kU)^{n}\cdot |T_{1i}|\\
+&\leq(k+1)U\cdot (kU)^{k}\\
+&\leq ((k+1)U)^{k+1}
+\end{align*}
+where $A_i$ is an $n\times n$ matrix formed by removing row $1$ and column $i$ of $T$. $|\text{det}(T)|\geq 1$ follows from the fact that $T$ is integer-valued and so are its sub-matrices. \end{proof}
+We have $T^{-1} = \frac{1}{\text{det}(T)}C^{\intercal}$, where $C$ is the cofactor matrix of $T$. Therefore, we know the absolute value of elements of $C$ is bounded between $[1, (nU)^{n}]$. From the lemma above, we also have $\frac{1}{|\text{det}(T)|}$ is bounded between $[(nU)^{-n},1]$. This concludes the proof that the absolute value of entries of $T^{-1}$ is bounded above by $(nU)^{n}$ and the absolute value of non-zero entries of $T^{-1}$ is bounded below by $(nU)^{-n}$.
 \subsection*{1b}
 Let $P = \{x \in \mathbb{R}^n | Ax \leqslant b\}$. We will construct $Q = \{y \in \mathbb{R}^{2n} | A'x \leqslant b'\} $ such that $Q$ is feasible if and only if $P$ is, by constructing $A'$ and $b'$. Let
 \[ A' = \begin{bmatrix} A & -A \\ \multicolumn{2}{c}{-I_{2n}} \end{bmatrix}\]
