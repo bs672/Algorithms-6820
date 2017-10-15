@@ -56,6 +56,54 @@ Second we show that $Q$ being feasible imples that $P$ is. Suppose $y\in Q$. We 
 Hence $x \in Q$.
 
 \subsection*{1c}
+
+\begin{lemma}
+  Suppose the polyhedron $P = \{x \in \mathbb{R}^n | Ax \leq b\}$ is non-empty,
+  and there are at least as many constraints as variables. Then
+  there is a solution $x \in P$ that is tight in at least $n$
+  constraints, where $n$ is the number of variables.
+\end{lemma}
+\begin{proof}
+  First we can observe that if $P$ is non-empty there is obviously
+  a solution that makes at least one constraint tight (assuming there
+  is at least one constraint), because from any feasible solution we
+  can move towards the decision boundary defined by any arbitrary
+  constraint until we reach it (or alternatively reach the decision
+  boundary of some other constraint first.) This gives a
+  solution that is tight in one constraint.
+
+  Given this factoid we can show the general result via induction
+  on $n$: the case where $n = 1$ follows trivially from the prior
+  factoid. Otherwise, as argued above, we can obtain a feasible
+  solution where at least one constraint is tight. We can use
+  the equation corresponding to this tight constraint to eliminate
+  one of the variables, giving a smaller feasibility problem with
+  one fewer variable and one fewer constraint. Note that by
+  construction this smaller problem is also non-empty, since at minimum
+  it contains the above feasible solution. By the inductive hypothesis
+  we can find a feasible solution to this sub-problem where $n - 1$
+  constraints are tight, which trivially gives a feasible solution
+  to the original feasibility problem with $n$ constraints tight
+  (by re-introducing the eliminated constraint, and setting the
+  eliminated variable according to that constraint). QED.
+\end{proof}
+
+% We can first observe that we only need to prove the forward direction
+% ($P$ is non-empty implies that $P \cap \[0, R\]^n$ is non-empty),
+% since the reverse is trivial. Suppose that $P$ is non-empty. First
+% we can observe we can trivially ensure we have at least $n$ constraints
+% without changing $P$, by making sure that the non-negativity constraints
+% for all variables are explicitly included.
+
+% Given the above lemma,
+% there is a feasible solution $x^*$ that is tight in at least $n$
+% of the constraints. Let $A^*$ be the $n \times n$ matrix from the rows
+% of $A$ corresponding to $n$ such tight constraints (chosen
+% arbitrarily if there are more than $n$ tight constraints), and let
+% $b^*$ be the column vector from the corresponding rows of $b$.
+% Then by construction the following equations are satisifed:
+
+
 \subsection*{1d}
 \subsection*{1e}
 \subsection*{1f}
