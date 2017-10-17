@@ -65,7 +65,7 @@ First we show that $P$ being feasible implies that $Q$ is. Suppose $x \in P$. We
 and set
 \[y^+_i = \begin{cases} x_i & \quad \text {$x_i$ is nonnegative} \\ 0 & \quad \text {otherwise} \end{cases}\]
 and
-\[y^+_i = \begin{cases} -x_i & \quad \text {$x_i$ is negative} \\ 0 & \quad \text {otherwise} \end{cases}.\]
+\[y^-_i = \begin{cases} -x_i & \quad \text {$x_i$ is negative} \\ 0 & \quad \text {otherwise} \end{cases}.\]
 Note that $y \geqslant 0$ and $x = y^+ - y^-$. Then
 \begin{align*}
 A'y &= \begin{bmatrix} A & -A \\ \multicolumn{2}{c}{-I_{2n}} \end{bmatrix} \begin{bmatrix} y^+ \\ y^- \end{bmatrix} \\
