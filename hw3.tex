@@ -89,30 +89,42 @@ Hence $x \in Q$.
 \subsection*{1c}
 
 \begin{lemma}
-  Suppose the polyhedron $P = \{x \in \mathbb{R_+}^n | Ax \leq b\}$ is non-empty,
-  and there are at least as many constraints as variables. Then
-  there is a solution $x \in P$ that is tight in at least $n$
-  constraints, where $n$ is the number of variables, and where the
-  corresponding rows of $A$ are linearly independent.
+  Suppose the polyhedron $P = \{x \in \mathbb{R_+}^n | Ax \leq b\}$ is
+non-empty, then there is a feasible $x^* \in P$ where the submatrix of $A$ corresponding to the tight constraints at $x^*$ is rank-$n$.
 \end{lemma}
 \begin{proof}
-  TODO: RICHARD ADD ARGUMENT HERE
+Suppose $x \in P$, as must exist since $P$ is nonempty. Let $A^=$ be the constraints (possibly 0 of them) which are tight for $x$, i.e., $A^=x = b^=$. Two cases:
+
+\begin{itemize}
+\item $A^=$ is rank-n. Then some size-$n$ subset of its rows is also 
+\item $A^=$ is rank deficient. Then by the rank-nullity theorem it has a
+nontrivial nullspace. Let $z$ be in the nullspace, and without loss of
+generality suppose $z_j < 0$ for some $j$. Then consider the ray $x + \lambda
+z$ for $\lambda \geq 0$. This ray must leave the polyhedron, because it leaves
+the positive orthant when $\lambda = \frac{x_j}{-z_j}$. And along this entire
+ray, the equality constraints $A^=$ remain satisfied, since $A^=(x + \lambda
+z) = Ax + \lambda Az = Ax = b^=$. So, when it leaves the polyhedron at some
+$\lambda_0$, this must be where some new constraint becomes tight. Let $x' = x
++ \lambda_0 z$, and repeat this process from this new $x$.
+\end{itemize}
+
+This process can only terminante when $A^=$ is full rank, but it must terminate
+because at each step we find a newly tight constraint, and never drop tight
+constraints. So, when we terminate, $A^=$ is rank-$n$.
+ 
 \end{proof}
 
 We can first observe that we only need to prove the forward direction
 ($P$ is non-empty implies that $P \cap [0, R]^n$ is non-empty),
-since the reverse is trivial. Suppose that $P$ is non-empty. First
-we note that we can trivially ensure we have at least $n$ constraints
-without changing $P$, by making sure that the non-negativity constraints
-for all variables are explicitly included.
+since the reverse is trivial. 
 
 Given the above lemma,
 there is a feasible solution $x^*$ that is tight in at least $n$
 of the constraints. Let $A^*$ be the $n \times n$ matrix from the rows
-of $A$ corresponding to $n$ such tight constraints (chosen
-arbitrarily if there are more than $n$ tight constraints), and let
-$b^*$ be the column vector from the corresponding rows of $b$.
-Then by construction the following equations are satisfied:
+of $A$ corresponding to $n$ such tight constraints (chosen arbitrarily to be
+rank $n$ if there are more than $n$ tight constraints), and let $b^*$ be the
+column vector from the corresponding rows of $b$.  Then by construction the
+following equations are satisfied:
 
 \begin{align}
   A^* x^* &= b^* \\
