@@ -186,5 +186,25 @@ which is clearly in $poly(n\log(U))$, so we are done.
 %Should be similar to the shrink/stretch method for ellipsoid algorithm
 \section*{Problem 2}
 \subsection*{2a}
+
+In order to deal with the case where the LP is potentially unbounded, we can simply 
+allow variables / the objective function to take values of $-\infty$ and $\infty$,
+and do some extra bookkeeping.
+
+Concretely, if at any time in the algorithm we have a variable that is unconstrained
+in the direction of increasing the objective function --- that is, it has a positive
+(negative) coefficient in $c$ and no constraint with a positive (negative) coefficient,
+--- then we allow setting one such variable to $\infty$ ($-\infty$), in order to achieve
+an infinite objective function value. Then if a new constraint enters at a later step
+in the algorithm that this infinite variable value violates, we use the constraint to
+solve a smaller LP recursively as usual.
+
+Finally, if at the end of the algorithm we have a finite objective value then
+we conclude that the LP is bounded, and otherwise we conclude that the
+LP is unbounded.
+
 \subsection*{2b}
+
+
+
 \end{document}
