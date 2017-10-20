@@ -162,10 +162,16 @@ which is clearly in $poly(n\log(U))$, so we are done.
 \end{algorithm}
 \textbf{Claim:} $P\cap \{x\in\mathbb{R}^n\mid a_j^{\intercal}x = b_j\}$ is non-empty.
 \begin{proof}
-  Define new polyhedron $P' = P\cap \{x\in\mathbb{R}^n\mid a_j^{\intercal}x = b_j\} =
+  Define a new polyhedron $P' = P\cap \{x\in\mathbb{R}^n\mid a_j^{\intercal}x = b_j\} =
   \{x\in\mathbb{R}^n\mid A'x \leq b, a_j^{\intercal}x \leq b_j, -a_j^{\intercal}x \leq -b_j \}$,
-  where $A'$ is matrix $A$ without row vector $a_j^{\intercal}$ and its corresponding $P'_{\epsilon} = \{A'x\leq b + \vec{1}\epsilon, a_j^{\intercal}x \leq b_j + \epsilon, -a_j^{\intercal}x \leq -b_j + \epsilon\}$ where $\epsilon$ is defined in (1d) for $P$. \\
-  Consider the vector $x$ under interest, $x\in P_{\epsilon}$ and {\em separation oracle}
+  where $A'$ is matrix $A$ without row vector $a_j^{\intercal}$. Note that according to
+  this definition $P' = P\cap \{x\in\mathbb{R}^n\mid a_j^{\intercal}x = b_j\}$.
+  In addition define $P'_{\epsilon} = \{A'x\leq b + \vec{1}\epsilon, a_j^{\intercal}x \leq b_j
+  + \epsilon, -a_j^{\intercal}x \leq -b_j + \epsilon\}$ where $\epsilon$ is defined as in the
+  solution to (1d), for $P$.
+
+  Consider the vector $x$ under interest that was given to the {\em separation oracle}.
+  The {\em separation oracle}
   has verified that $x\notin P$ and outputted row vector $a_j^{\intercal}$ such that $a_j^{\intercal}x > b_j$. Therefore, $x\in P'_{\epsilon}$. According to (1d), since $P'_{\epsilon}$ is non-empty, we conclude that $P'$ is also non-empty. 
 \end{proof}
 \subsection*{1f}
