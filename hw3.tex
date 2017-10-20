@@ -193,39 +193,48 @@ which is clearly in $poly(n\log(U))$, so we are done.
 \section*{Problem 2}
 \subsection*{2a}
 
-In order to deal with the case where the LP is potentially unbounded, we can simply 
-allow variables / the objective function to take infinite values,
-and do some extra bookkeeping. Concretely, in addition to having a finite value
-for each variable in a solution, we maintain a vector $w$ of weights 
-such that that $x + t w$ is a feasible solution for all $t \in \mathbb{R}_{\geq 0}$.
 
-Initially we set the weight vector $w$ to all zeros. If at any point in the algorithm
-$w = 0$ and we encounter a variable that is unconstrained
-in the direction of increasing the objective function --- that is, it has a positive
-(negative) coefficient in $c$ and no constraint with a positive (negative) coefficient
---- then we set the value of $w$ for exactly one of these variables to $1$ ($-1$).
+In order to deal with the case where the LP is potentially unbounded, we can simply,
+while the problem is unbounded, maintain in addition to some feasible $x$, a direction $w$ such that $x + tw$ is feasible for all $t \in \mathbb{R}_{\geq0}$ and $w \cdot c > 0$.
 
-When we check for constraint violations, we must take into account the $w$ vector.
-In addition to checking whether $x$ violates each constraint directly, for each
-constraint \constraintj we check whether $w$ violates the constraint. This is done
-by checking whether $a_j^T w > 0$: if this is the case then the constraint will
-become violated as $t \rightarrow \infty$. If a constraint is violated in either
-of these ways then we use that constraint to eliminate a variable and recursively
-solve a smaller LP as usual.
+Initially, before any constraints have been processed, we set the weight vector $w$ to $c$.
 
-The final complication for this method comes when we solve a subproblem with an
-unbounded solution ($w \neq 0$), and deciding how to set the value of $w$ for the
-new solution to the problem with the eliminated variable and constraint re-introduced.
-Suppose that when we constructed the subproblem we eliminated variable $x_k$
-according to the equation $x_k = d_0 + \sum_{j \neq k}{d_j x_j}$, and let
-$\{w_j | j \neq k\}$ denote the weights in the solution to the subproblem.
-Then the weight of $x_k$ in the new solution with $x_k$ re-introduced should
-be set to $w_k = \sum_{j \neq k}{d_j w_j}$.
+When we process a new constraint $a_i x \leq b_i$ we check what this does to the ray $x + tw$. There are 4 cases:
 
-Given this extra bookkeeping and methods for checking constraints and using
-the solution to subproblems we have a concrete algorithm that can deal with
-unbounded solutions. At termination of the algorithm if $w = 0$ we can conclude
-that the problem is bounded, whereas if $w \neq 0$ the problem is unbounded.
+\begin{itemize}
+\item The entire ray already meets this constraint. In this case, we can continue to the next constraint.
+\item The point $x$ violates this constraint, but at some $t_0$ the ray becomes feasible and stays feasible. Then we update $x \leftarrow x + t_0 w$.
+\item There is some $t_0$ (possibly 0) such that the entire ray $x + t w$ for $t\geq t_0$ is infeasible. Then $x$ itself is also not feasible, so just as in the problem-statement algorithm, we recurse to find a new $x$ (and possibly $w$).
+\end{itemize}
+
+
+%If at any point in the algorithm
+%$w = 0$ and we encounter a variable that is unconstrained
+%in the direction of increasing the objective function --- that is, it has a positive
+%(negative) coefficient in $c$ and no constraint with a positive (negative) coefficient
+%--- then we set the value of $w$ for exactly one of these variables to $1$ ($-1$).
+%
+%When we check for constraint violations, we must take into account the $w$ vector.
+%In addition to checking whether $x$ violates each constraint directly, for each
+%constraint \constraintj we check whether $w$ violates the constraint. This is done
+%by checking whether $a_j^T w > 0$: if this is the case then the constraint will
+%become violated as $t \rightarrow \infty$. If a constraint is violated in either
+%of these ways then we use that constraint to eliminate a variable and recursively
+%solve a smaller LP as usual.
+%
+%The final complication for this method comes when we solve a subproblem with an
+%unbounded solution ($w \neq 0$), and deciding how to set the value of $w$ for the
+%new solution to the problem with the eliminated variable and constraint re-introduced.
+%Suppose that when we constructed the subproblem we eliminated variable $x_k$
+%according to the equation $x_k = d_0 + \sum_{j \neq k}{d_j x_j}$, and let
+%$\{w_j | j \neq k\}$ denote the weights in the solution to the subproblem.
+%Then the weight of $x_k$ in the new solution with $x_k$ re-introduced should
+%be set to $w_k = \sum_{j \neq k}{d_j w_j}$.
+%
+%Given this extra bookkeeping and methods for checking constraints and using
+%the solution to subproblems we have a concrete algorithm that can deal with
+%unbounded solutions. At termination of the algorithm if $w = 0$ we can conclude
+%that the problem is bounded, whereas if $w \neq 0$ the problem is unbounded.
 
 
 \subsection*{2b}
