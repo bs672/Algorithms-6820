@@ -7,6 +7,7 @@
 \newtheorem{lemma}{Lemma}
 
 \newcommand{\astarinv}{$(A^*)^{-1}$}
+\newcommand{\constraintj}{$a_j^{\intercal}x \leq b_j$}
 
 \begin{document}
 \begin{flushright}
@@ -193,24 +194,30 @@ which is clearly in $poly(n\log(U))$, so we are done.
 \subsection*{2a}
 
 In order to deal with the case where the LP is potentially unbounded, we can simply 
-allow variables / the objective function to take values of $-\infty$ and $\infty$,
-and do some extra bookkeeping.
+allow variables / the objective function to take infinite values,
+and do some extra bookkeeping. Concretely, in addition to having a finite value
+for each variable in a solution, we maintain a vector $w$ of weights 
+such that that $x + t w$ is a feasible solution for all $t \in \mathbb{R}_{\geq 0}$.
 
-Concretely, if at any time in the algorithm we have a variable that is unconstrained
+Initially we set the weight vector $w$ to all zeros. If at any point in the algorithm
+$w = 0$ and we encounter a variable that is unconstrained
 in the direction of increasing the objective function --- that is, it has a positive
 (negative) coefficient in $c$ and no constraint with a positive (negative) coefficient
---- then we allow setting exactly one such variable to $\infty$ ($-\infty$), in order
-to achieve an infinite objective function value.
-Then if a new constraint enters at a later step
-in the algorithm that this infinite-value variable (or any other variable) violates,
-we use the constraint to solve a smaller LP recursively as usual.
+--- then we set the value of $w$ for exactly one of these variables to $1$ ($-1$).
 
-If we introduce an infinite-value variable and then reach the end of the algorithm
-without violating any constraints, then we conclude that the LP is unbounded,
-and output an unbounded solution involving exactly one infinite-valued variable.
-If this is the output to the entire problem then we conclude finally that the LP
-is unbounded. Otherwise, if it is the solution to a sub-problem, then we continue
-adding constraints to this infinite-valued solution as above.
+When we check for constraint violations, we must take into account the $w$ vector.
+In addition to checking whether $x$ violates each constraint directly, for each
+constraint \constraintj we check whether $w$ violates the constraint. This is done
+by checking whether $a_j^T w > 0$: if this is the case then the constraint will
+become violated as $t \rightarrow \infty$. If a constraint is violated in either
+of these ways then we use that constraint to eliminate a variable and recursively
+solve a smaller LP as usual.
+
+The final complication for this method comes when we solve a subproblem with an
+unbounded solution ($w \neq 0$), and deciding how to set the value of $w$ for the
+new solution to the problem with the eliminated variable and constraint re-introduced.
+TODO: FILL IN MISSING DETAILS
+
 
 \subsection*{2b}
 
