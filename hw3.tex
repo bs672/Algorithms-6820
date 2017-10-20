@@ -216,7 +216,16 @@ solve a smaller LP as usual.
 The final complication for this method comes when we solve a subproblem with an
 unbounded solution ($w \neq 0$), and deciding how to set the value of $w$ for the
 new solution to the problem with the eliminated variable and constraint re-introduced.
-TODO: FILL IN MISSING DETAILS
+Suppose that when we constructed the subproblem we eliminated variable $x_k$
+according to the equation $x_k = d_0 + \sum_{j \neq k}{d_j x_j}$, and let
+$\{w_j | j \neq k\}$ denote the weights in the solution to the subproblem.
+Then the weight of $x_k$ in the new solution with $x_k$ re-introduced should
+be set to $w_k = \sum_{j \neq k}{d_j w_j}$.
+
+Given this extra bookkeeping and methods for checking constraints and using
+the solution to subproblems we have a concrete algorithm that can deal with
+unbounded solutions. At termination of the algorithm if $w = 0$ we can conclude
+that the problem is bounded, whereas if $w \neq 0$ the problem is unbounded.
 
 
 \subsection*{2b}
