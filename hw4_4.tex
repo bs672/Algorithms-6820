@@ -17,7 +17,7 @@ where $n$ is the number vertices in $G$, and $H$ corresponds
 to the constant appearing in the tree gadgets, which is assumed
 to be very large (greater than $4n + 4$).
 
-This reduction is clearly polynomial time becasue the size of
+This reduction is clearly polynomial time because the size of
 each tree is linear in $n$, and the number of trees is at worst
 quadratic in $n$. In order to prove that this reduction is correct,
 we need to argue that a graph $G$ is 3-colorable if and only if there
@@ -43,7 +43,7 @@ First of all, $T_S$ had $H + 3n + 4$ nodes, and we
 added $n$ nodes to it to construct $T$, so clearly $T$
 has exactly $m$ vertices.
 Secondly, for each vertex $v_i$ in $G$ we attached a new node to
-$v_i^c$ in $T_S$, where $c = \text{color}(v_i)$
+$v_i^c$ in $T_S$, where $c = \text{color}(v_i)$.
 Thus the subtree of $T$ induced by the hat, the $c$-stem
 of the tree, and $c_i$ is isomorphic to the vertex gadget
 of $v_i$. Thirdly, for every edge $(v_i, v_j)$ we know
@@ -83,7 +83,7 @@ must be isomorphic to $T_S$ with $n$ such extra vertices attached.
 Given we know the structure that $T$ must have,
 we will argue how to 3-color $G$ based on $T$. First we
 locate the vertex of maximum degree and label it as $A$,
-and label its leaf neighbours as $\{h_1,\ldots,h_H\}$
+and label its leaf neighbors as $\{h_1,\ldots,h_H\}$
 arbitrarily. Then we arbitrarily label the three branches
 corresponding to the remaining three children of $A$ as
 $R$, $G$, and $B$, and label the depth-$i$ non-leaf nodes
@@ -91,11 +91,11 @@ in each branch as $v_i^R$, $v_i^G$, and $v_i^B$
 respectively. Finally we arbitrarily label
 one of the leaf node(s) at depth $i + 1$
 in each branch as $s^R$, $s^G$, and $s^B$ respectively,
-and for each $i$ we label the remaining unlabelled leaf node,
+and for each $i$ we label the remaining unlabeled leaf node,
 which must be attached to one of the $v_i^{color}$ nodes, as $c_i$.
 Given what we have reasoned about
 the structure of $T$ this is possible to do unambiguously (up
-the the choices flagged as arbitrary), and for
+the choices flagged as arbitrary), and for
 each $i$ exactly one of $v_i^R$, $v_i^G$, or $v_i^B$
 will have a $c_i$ neighbor. We color each $v_i$ in $G$
 according to the label of the branch that $c_i$ is in (either
@@ -164,7 +164,7 @@ cannot be fooled, as required.
   \path (vn) edge node {} (s);
 \end{tikzpicture}
 \caption{Vertex gadget tree $T_{v_i}$ in \tr reduction for vertex $v_i$.
-         This contains $H + n + 3$ vertices.}
+         This tree contains $H + n + 3$ vertices.}
 \label{q4:vertextree}
 \end{figure}
 
@@ -211,8 +211,8 @@ cannot be fooled, as required.
   \path (vn1) edge node {} (s1);
   \path (vn2) edge node {} (s2);
 \end{tikzpicture}
-\caption{Edge gadget tree $T_{(v_i,v_j)}$ in \tr reduction for edge $(v_i, v_j)$. This contains
-         $H + 2n + 5$ vertices.}
+\caption{Edge gadget tree $T_{(v_i,v_j)}$ in \tr reduction for edge $(v_i, v_j)$. This tree
+         contains $H + 2n + 5$ vertices.}
 \label{q4:edgetree}
 \end{figure}
 
@@ -264,6 +264,6 @@ cannot be fooled, as required.
   \path (vnG) edge node {} (sG);
   \path (vnB) edge node {} (sB);
 \end{tikzpicture}
-\caption{Scaffolding tree $T_S$ in \tr reduction. This contains $H + 3n + 4$ vertices.}
+\caption{Scaffolding tree $T_S$ in \tr reduction. This tree contains $H + 3n + 4$ vertices.}
 \label{q4:scafftree}
 \end{figure}
