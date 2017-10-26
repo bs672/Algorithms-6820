@@ -31,9 +31,9 @@ describe how to create a tree $T$ of size $m$ with all the gadget
 trees as subtrees. First we initialize $T$ as the scaffolding
 tree $T_S$, and we arbitrarily label the colors in a 3-coloring
 of $G$ as $R$, $G$, and $B$. Now we will extend this tree
-by adding a new node for every vertex $v_i$. Suppose the color
-of $v_i$ is $C$: we will create a new node $c_i$ and
-add an edge from node $v_i^C$ to $c_i$.
+by adding a new node for every vertex $v_i$. Let $c = \text{color}(v_i)$.
+We will create a new node $c_i$ and
+add an edge from $v_i^c$ to $c_i$.
 
 Now we argue that this $T$ has the desired properties.
 We will refer to $\{h_1,\ldots,h_H\}$ along with $A$
