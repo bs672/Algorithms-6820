@@ -10,14 +10,16 @@ edge, which are described by Figure \ref{q4:vertextree}
 and Figure \ref{q4:edgetree}.
 In addition we will create a single scaffolding tree, which is
 described by Figure \ref{q4:scafftree}. Finally, in this
-reduction we will set the value of $m$ to be $H + 4n + 1$,
+reduction we will set the value of $m$ to be $H + 4n + 4$,
 where $n$ is the number vertices in $G$, and $H$ corresponds
 to the constant appearing in the tree gadgets, which is assumed
-to be very large (greater than $4n + 1$).
+to be very large (greater than $4n + 4$).
 
-In order to prove that this reduction is correct, we need to argue
-that a graph $G$ is 3-colorable if and only if there is a tree
-$T$ with at most $m$ vertices that has all the gadget trees
+This reduction is clearly polynomial time becasue the size of
+each tree is linear in $n$, and the number of trees is at worst
+quadratic in $n$. In order to prove that this reduction is correct,
+we need to argue that a graph $G$ is 3-colorable if and only if there
+is a tree $T$ with at most $m$ vertices that has all the gadget trees
 as subtrees. 
 
 For the forward direction, suppose $G$ is 3-colorable. We will
@@ -30,7 +32,7 @@ of $v_i$ is $C$: we will create a new node $c_i$ and
 add an edge from node $v_i^C$ to $c_i$.
 
 Now we argue that this $T$ has the desired properties.
-First of all, $T_S$ had $H + 3n + 1$ nodes, and we 
+First of all, $T_S$ had $H + 3n + 4$ nodes, and we 
 added $n$ nodes to it to construct $T$, so clearly $T$
 has exactly $m$ vertices.
 Secondly, for each vertex $v_i$ in $G$ we attached a new node to
@@ -54,7 +56,7 @@ construct a tree $T$ with at most $m$ vertices containing
 $T_S$ along with all the vertex and edge gadgets based on
 $G$ as subtrees. We will argue from this that $G$ is 3-colorable.
 First of all, given $T_S$ is a subtree $T$ must have at least
-$H + 3n + 1$ vertices, so it can have at most $n$ vertices
+$H + 3n + 4$ vertices, so it can have at most $n$ vertices
 in addition to the vertices in the subtree isomorphic to $T_S$.
 Now we will consider the possible ways that $T_S$ could be
 extended to $T$ in order to incorporate the vertex and
@@ -86,15 +88,36 @@ will have three neighbors. We color $v_i$ in $G$
 with the label of the branch where the $v_i$ node
 has three neighbors.
 
-Finally, we will argue that this
-satisfies the constraint that neighboring vertices
-in $G$ must have different colors.
+To complete the backwards direction of the proof, we
+will argue that this satisfies the constraint that neighboring
+vertices in $G$ must have different colors. Suppose $(v_i, v_j) \in E(G)$.
+Then given the corresponding edge gadget it must be the case that
+there is a degree 3 $v_i^*$ node in $T$ and a degree 3 $v_j^*$ node
+in $T$ in separate branches. Therefore since we have argued that for each
+$i$ there is a degree 3 node in exactly one branch of $T$ and this is
+used to color the node, it must be the case that $v_i$ and $v_j$ are
+assigned different colors.
 
-TODO: FINISH ABOVE ARGUMENT
-TODO: FIX GADGETS
-TODO: REASON THAT PROBLEM IS IN NP
-
-
+Now we have established that \tc reduces to \tr, which implies
+that \tr is in NP-HARD. All that remains in order to show that it is
+in NP-COMPLETE is to prove that it is in NP. To see this we will
+describe a polynomial-time verifier for ``yes'' instances of \tr.
+The input string to the verifier will consist
+of a reconstructed tree $T$ of
+size at most $m$, along with isomorphism functions $\pi_i$ mapping every
+node in each subtree $T_i$ to a node in $T$. Clearly this string
+can be polynomial in length, as in the worst case the size of
+an allowable $T$ is bounded above by the sum of all the subtree sizes,
+and the size of each $\pi_i$ is at worst a constant multiple
+of the size of each subtree. The verifier works by first counting
+the number of nodes in $T$ to assert that it is less than $m$,
+running DFS to assert that $T$ is in fact a tree, asserting that
+each $\pi_i$ is a one-to-one function from $V(T_i)$ to $V(T)$,
+and finally asserting that each $T_i$ is a subtree of $T$ one by one,
+by asserting for every $(u, v) \in E(T_i)$ that
+$(\pi_i(u), \pi_i(v)) \in E(T)$. This clearly runs in polynomial time, 
+asserts that $T$ is a valid solution to the problem, and
+cannot be fooled, as required.
 
 
 
@@ -107,9 +130,12 @@ TODO: REASON THAT PROBLEM IS IN NP
   \node[shape=circle,draw=black] (hH) at (1.5,2) {$h_H$};
   \node[shape=circle,draw=black] (v1) at (0,-2) {$v_1$};
   \node[shape=circle,draw=black] (v2) at (0,-4) {$v_2$};
-  \node (dots1) at (0,-6) {$\ldots$};
-  \node[shape=circle,draw=black] (vi) at (0,-8) {$v_i$};
-  \node[shape=circle,draw=black] (ci) at (2,-8) {$c_i$};
+  \node (dots1) at (0,-5) {$\ldots$};
+  \node[shape=circle,draw=black] (vi) at (0,-6) {$v_i$};
+  \node[shape=circle,draw=black] (ci) at (2,-6) {$c_i$};
+  \node (dots2) at (0,-7) {$\ldots$};
+  \node[shape=circle,draw=black] (vn) at (0,-8) {$v_n$};
+  \node[shape=circle,draw=black] (s) at (0,-10) {$s$};
   \path (R) edge node {} (h1);
   \path (R) edge node {} (h2);
   \path (R) edge node {} (hH);
@@ -118,8 +144,12 @@ TODO: REASON THAT PROBLEM IS IN NP
   \path (v2) edge node {} (dots1);
   \path (dots1) edge node {} (vi);
   \path (vi) edge node {} (ci);
+  \path (vi) edge node {} (dots2);
+  \path (dots2) edge node {} (vn);
+  \path (vn) edge node {} (s);
 \end{tikzpicture}
-\caption{Vertex gadget tree $T_{v_i}$ in \tr reduction for vertex $v_i$}
+\caption{Vertex gadget tree $T_{v_i}$ in \tr reduction for vertex $v_i$.
+         This contains $H + n + 3$ vertices.}
 \label{q4:vertextree}
 \end{figure}
 
@@ -134,12 +164,18 @@ TODO: REASON THAT PROBLEM IS IN NP
   \node[shape=circle,draw=black] (v12) at (2,-2) {$v_1^{(2)}$};
   \node[shape=circle,draw=black] (v21) at (-2,-4) {$v_2^{(1)}$};
   \node[shape=circle,draw=black] (v22) at (2,-4) {$v_2^{(2)}$};
-  \node (dots1) at (-2,-6) {$\ldots$};
-  \node (dots2) at (2,-6) {$\ldots$};
-  \node[shape=circle,draw=black] (vi1) at (-2,-8) {$v_i^{(1)}$};
-  \node[shape=circle,draw=black] (vj2) at (2,-8) {$v_j^{(2)}$};
-  \node[shape=circle,draw=black] (ci1) at (-0,-8) {$c_i^{(1)}$};
-  \node[shape=circle,draw=black] (ci2) at (4,-8) {$c_j^{(2)}$};
+  \node (dots1) at (-2,-5) {$\ldots$};
+  \node (dots2) at (2,-5) {$\ldots$};
+  \node[shape=circle,draw=black] (vi1) at (-2,-6) {$v_i^{(1)}$};
+  \node[shape=circle,draw=black] (vj2) at (2,-6) {$v_j^{(2)}$};
+  \node[shape=circle,draw=black] (ci1) at (0,-6) {$c_i^{(1)}$};
+  \node[shape=circle,draw=black] (ci2) at (4,-6) {$c_j^{(2)}$};
+  \node (dots3) at (-2,-7) {$\ldots$};
+  \node (dots4) at (2,-7) {$\ldots$};
+  \node[shape=circle,draw=black] (vn1) at (-2,-8) {$v_n^{(1)}$};
+  \node[shape=circle,draw=black] (vn2) at (2,-8) {$v_n^{(2)}$};
+  \node[shape=circle,draw=black] (s1) at (-2,-10) {$s^{(1)}$};
+  \node[shape=circle,draw=black] (s2) at (2,-10) {$s^{(2)}$};
   \path (R) edge node {} (h1);
   \path (R) edge node {} (h2);
   \path (R) edge node {} (hH);
@@ -153,8 +189,15 @@ TODO: REASON THAT PROBLEM IS IN NP
   \path (dots2) edge node {} (vj2);
   \path (vi1) edge node {} (ci1);
   \path (vj2) edge node {} (ci2);
+  \path (vi1) edge node {} (dots3);
+  \path (vj2) edge node {} (dots4);
+  \path (dots3) edge node {} (vn1);
+  \path (dots4) edge node {} (vn2);
+  \path (vn1) edge node {} (s1);
+  \path (vn2) edge node {} (s2);
 \end{tikzpicture}
-\caption{Edge gadget tree $T_{(v_i,v_j)}$ in \tr reduction for edge $(v_i, v_j)$}
+\caption{Edge gadget tree $T_{(v_i,v_j)}$ in \tr reduction for edge $(v_i, v_j)$. This contains
+         $H + 2n + 5$ vertices.}
 \label{q4:edgetree}
 \end{figure}
 
@@ -175,12 +218,15 @@ TODO: REASON THAT PROBLEM IS IN NP
   \node[shape=circle,draw=black] (v3R) at (-3,-6) {$v_3^R$};
   \node[shape=circle,draw=black] (v3G) at (0,-6) {$v_3^G$};
   \node[shape=circle,draw=black] (v3B) at (3,-6) {$v_3^B$};
-  \node (dotsR) at (-3,-8) {$\ldots$};
-  \node (dotsG) at (0,-8) {$\ldots$};
-  \node (dotsB) at (3,-8) {$\ldots$};
-  \node[shape=circle,draw=black] (vnR) at (-3,-10) {$v_n^R$};
-  \node[shape=circle,draw=black] (vnG) at (0,-10) {$v_n^G$};
-  \node[shape=circle,draw=black] (vnB) at (3,-10) {$v_n^B$};
+  \node (dotsR) at (-3,-7) {$\ldots$};
+  \node (dotsG) at (0,-7) {$\ldots$};
+  \node (dotsB) at (3,-7) {$\ldots$};
+  \node[shape=circle,draw=black] (vnR) at (-3,-8) {$v_n^R$};
+  \node[shape=circle,draw=black] (vnG) at (0,-8) {$v_n^G$};
+  \node[shape=circle,draw=black] (vnB) at (3,-8) {$v_n^B$};
+  \node[shape=circle,draw=black] (sR) at (-3,-10) {$s^R$};
+  \node[shape=circle,draw=black] (sG) at (0,-10) {$s^G$};
+  \node[shape=circle,draw=black] (sB) at (3,-10) {$s^B$};
   \path (R) edge node {} (h1);
   \path (R) edge node {} (h2);
   \path (R) edge node {} (hH);
@@ -199,7 +245,10 @@ TODO: REASON THAT PROBLEM IS IN NP
   \path (dotsR) edge node {} (vnR);
   \path (dotsG) edge node {} (vnG);
   \path (dotsB) edge node {} (vnB);
+  \path (vnR) edge node {} (sR);
+  \path (vnG) edge node {} (sG);
+  \path (vnB) edge node {} (sB);
 \end{tikzpicture}
-\caption{Scaffolding tree $T_S$ in \tr reduction}
+\caption{Scaffolding tree $T_S$ in \tr reduction. This contains $H + 3n + 4$ vertices.}
 \label{q4:scafftree}
 \end{figure}
