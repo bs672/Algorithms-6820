@@ -28,21 +28,21 @@ We will prove that the FRATERNITY problem is NP-Complete by a
 reduction from IND SET, i.e. prove IND SET $\leq_p$ FRATERNITY.
 
 Consider an IND SET problem with inputs \{G=(V,E), k\}. From this input, construct an input of FRATERNITY as follows:
-For each node v $\in$ V, create a node gadget called {\bf gadget(v)}. If D is the maximum degree of G, each gadget(v) consists of 2D-1 fraternity members labelled, $v_1$...$v_2_D_-_1$. For all $v_i, v_i_+_1$ in gadget(v):
+For each node v $\in$ V, create a node gadget called {\bf gadget(v)}. If D is the maximum degree of G, each gadget(v) consists of 2D-1 fraternity members labelled, $v_1$...$v_{2D-1}$. For all $v_i, v_{i+1}$ in gadget(v):
 
 \[
-$v_i$ =
+v_i =
     \begin{cases}
-        $f(v_i+1)$ &\quad \text{if}\ $i is odd$ \\
-        $s(v_i+1)$ &\quad \text{otherwise} \\
+        f(v_i+1) &\quad \text{if $i$ is odd} \\
+        s(v_i+1) &\quad \text{otherwise} \\
     \end{cases}
 \]
 
-For every edge $e_u_v \in$ E connecting nodes u and v, pick some members $u_a$, $v_b$ from gadget(u) and gadget(v) respectively, such that $j(u_a) = j(v_b) = NULL$ \textbf{and} a and b are both odd. Now assign $u_a$ = $j(v_b)$.\\
+For every edge $(u,v) \in$ E connecting nodes u and v, pick some members $u_a$, $v_b$ from gadget(u) and gadget(v) respectively, such that $j(u_a) = j(v_b) = NULL$ \textbf{and} a and b are both odd. Now assign $u_a$ = $j(v_b)$.\\
 
-\textbf{Claim:} There will always exist such $u_a$, $v_b$ for each edge $e_u_v \in$ E
+\textbf{Claim:} There will always exist such $u_a$, $v_b$ for each edge $(u,v) \in E$
 
-\textbf{Proof:} This must be true because if the maximum degree is D, then for any node v $\in$ V, the maximum number of edges $e_u_v \in$ E $\leq$ D. Hence, we will need at most D such $v_b$'s. There are exactly D number of odd numbered members in each gadget, hence there will always be a $v_b$ such that b is odd and $j(v_b) = NULL$ for any edge $e_u_v \in$ E. This is symmetrically true for node u.\\
+\textbf{Proof:} This must be true because if the maximum degree is D, then for any node v $\in$ V, the maximum number of edges $(u,v) \in$ E $\leq$ D. Hence, we will need at most D such $v_b$'s. There are exactly D number of odd numbered members in each gadget, hence there will always be a $v_b$ such that b is odd and $j(v_b) = NULL$ for any edge $(e,v) \in$ E. This is symmetrically true for node u.\\
 
 \textbf{Claim:} The FRATERNITY input construction can be done in polynomial time.
 
