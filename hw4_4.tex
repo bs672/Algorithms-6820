@@ -3,6 +3,8 @@
 
 \section*{Problem 4}
 
+{\bf Reduction from \tc to \tr}
+
 We will describe a reduction from \tc to \tr. For this reduction we
 will define gadgets for every vertex and edge in the input \tc graph
 $G$, by creating one tree for every vertex and one tree for every
@@ -20,8 +22,10 @@ each tree is linear in $n$, and the number of trees is at worst
 quadratic in $n$. In order to prove that this reduction is correct,
 we need to argue that a graph $G$ is 3-colorable if and only if there
 is a tree $T$ with at most $m$ vertices that has all the gadget trees
-as subtrees. 
-
+as subtrees.\\ 
+\\
+{\bf Forward direction of proof of reduction correctness}\\
+\\
 For the forward direction, suppose $G$ is 3-colorable. We will
 describe how to create a tree $T$ of size $m$ with all the gadget
 trees as subtrees. First we initialize $T$ as the scaffolding
@@ -32,30 +36,33 @@ of $v_i$ is $C$: we will create a new node $c_i$ and
 add an edge from node $v_i^C$ to $c_i$.
 
 Now we argue that this $T$ has the desired properties.
+We will refer to $\{h_1,\ldots,h_H\}$ along with $A$
+as the ``hat'' of the tree, and $\{v_1^c,\ldots,v_n^c\}$ along
+with $s^c$ as the ``$c$-stem'' of the tree (for $c \in \{R, G, B\}$).
 First of all, $T_S$ had $H + 3n + 4$ nodes, and we 
 added $n$ nodes to it to construct $T$, so clearly $T$
 has exactly $m$ vertices.
 Secondly, for each vertex $v_i$ in $G$ we attached a new node to
-either $v_i^R$, $v_i^G$, or $v_i^B$ in $T_S$. Refer to the ``hat''
-of the tree as node $R$ along with the $h_j$ nodes. Then
-the subtree of $T$ corresponding to the hat, $c_i$, and
-the $v$ nodes in the branch of the tree corresponding
-ot the color of $v_i$ is isomorphic to the vertex gadget
+$v_i^c$ in $T_S$, where $c = \text{color}(v_i)$
+Thus the subtree of $T$ induced by the hat, the $c$-stem
+of the tree, and $c_i$ is isomorphic to the vertex gadget
 of $v_i$. Thirdly, for every edge $(v_i, v_j)$ we know
 that $v_i$ and $v_j$ have different colors in $G$, so
 the $c_i$ and $c_j$ nodes must have been added in different
-branches of $G$. Thus the subtree given by the hat, $c_i$,
-$c_j$, and the $v$ nodes in the two branches corresponding to
-the colors of $v_i$ and $v_j$ is isomorphic to the corresponding
+branches of $G$. Thus the subtree induced by the hat,
+the $\text{color}(v_i)$- and $\text{color}(v_j)$-stems of the
+tree, $c_i$, and $c_j$ is isomorphic to the corresponding
 edge gadget. Finally $T$ was constructed by extending $T_S$,
 so $T_S$ is a subtree. Thus we have proved the forward
-direction.
-
+direction.\\
+\\
+{\bf Backwards direction of proof of reduction correctness}\\
+\\
 For the backwards direction of the proof, suppose we can
 construct a tree $T$ with at most $m$ vertices containing
 $T_S$ along with all the vertex and edge gadgets based on
 $G$ as subtrees. We will argue from this that $G$ is 3-colorable.
-First of all, given $T_S$ is a subtree $T$ must have at least
+First of all given that $T_S$ is a subtree, $T$ must have at least
 $H + 3n + 4$ vertices, so it can have at most $n$ vertices
 in addition to the vertices in the subtree isomorphic to $T_S$.
 Now we will consider the possible ways that $T_S$ could be
@@ -64,40 +71,48 @@ edge gadgets. Since $H$ is so large, the hats of the gadget
 subtrees must be the same as the hat of $T_S$ (else we would
 have to add too many vertices).
 Each vertex gadget $v_i$ requires
-a path of length $n$ rooted at $R$, with an extra vertex
-attached to the $i$'th node in the path. Obviously the
-only way to satisfy this for all $n$ gadgets given we can
-only add $n$ extra nodes,
-would be to attach exactly one new node to one
+a path of length $n + 1$ prefixed by $A$, with an extra vertex
+attached to the $(i+1)$'th node in the path. Obviously the
+only way to satisfy this for all $n$ gadgets simultaneously,
+given we can only add $n$ extra nodes,
+would be to attach a new node to exactly one
 of the three $v_i^{color}$ vertices for each
 $i \in \{1,\ldots,n\}$. Therefore we can conclude that $T$
-must be isomorphic to $T_S$ with this kind of extension.
+must be isomorphic to $T_S$ with $n$ such extra vertices attached.
 
-Given we know roughly the structure that $T$ must have,
-we will argue how to 3-color $G$ based on $T$. First
-locate the vertex of maximum degree and label it as $R$,
+Given we know the structure that $T$ must have,
+we will argue how to 3-color $G$ based on $T$. First we
+locate the vertex of maximum degree and label it as $A$,
 and label its leaf neighbours as $\{h_1,\ldots,h_H\}$
-arbitrarily. Then arbitrarily label the three branches
-corresponding to the remaining three children of as $R$,
-$G$, and $B$, and label the depth $i$ non-leaf nodes
+arbitrarily. Then we arbitrarily label the three branches
+corresponding to the remaining three children of $A$ as
+$R$, $G$, and $B$, and label the depth-$i$ non-leaf nodes
 in each branch as $v_i^R$, $v_i^G$, and $v_i^B$
-respectively. Given what we have reasoned about
-the structure of $T$ this is possible to do, and for
+respectively. Finally we arbitrarily label
+one of the leaf node(s) at depth $i + 1$
+in each branch as $s^R$, $s^G$, and $s^B$ respectively,
+and for each $i$ we label the remaining unlabelled leaf node,
+which must be attached to one of the $v_i^{color}$ nodes, as $c_i$.
+Given what we have reasoned about
+the structure of $T$ this is possible to do unambiguously (up
+the the choices flagged as arbitrary), and for
 each $i$ exactly one of $v_i^R$, $v_i^G$, or $v_i^B$
-will have three neighbors. We color $v_i$ in $G$
-with the label of the branch where the $v_i$ node
-has three neighbors.
+will have a $c_i$ neighbor. We color each $v_i$ in $G$
+according to the label of the branch that $c_i$ is in (either
+$R$, $G$, or $B$).
 
 To complete the backwards direction of the proof, we
 will argue that this satisfies the constraint that neighboring
 vertices in $G$ must have different colors. Suppose $(v_i, v_j) \in E(G)$.
-Then given the corresponding edge gadget it must be the case that
-there is a degree 3 $v_i^*$ node in $T$ and a degree 3 $v_j^*$ node
-in $T$ in separate branches. Therefore since we have argued that for each
-$i$ there is a degree 3 node in exactly one branch of $T$ and this is
-used to color the node, it must be the case that $v_i$ and $v_j$ are
-assigned different colors.
-
+Then given that the corresponding edge gadget is a subtree of $T$
+it must be the case that there are degree-3 $v_i^{color}$
+and $v_j^{color}$ nodes in separate
+branches of $T$. This implies that $c_i$ and $c_j$ must be in separate
+branches, so $v_i$ and $v_j$ will have been assigned different colors.
+Therefore this 3-coloring is clearly valid, so $G$ is 3-colorable.\\
+\\
+{\bf Proof that \tr is in NP}\\
+\\
 Now we have established that \tc reduces to \tr, which implies
 that \tr is in NP-HARD. All that remains in order to show that it is
 in NP-COMPLETE is to prove that it is in NP. To see this we will
@@ -123,7 +138,7 @@ cannot be fooled, as required.
 
 \begin{figure}
 \begin{tikzpicture}
-  \node[shape=circle,draw=black] (R) at (0,0) {R};
+  \node[shape=circle,draw=black] (A) at (0,0) {A};
   \node[shape=circle,draw=black] (h1) at (-1.5,2) {$h_0$};
   \node[shape=circle,draw=black] (h2) at (-0.5,2) {$h_1$};
   \node (dots) at (0.5,2) {$\ldots$};
@@ -136,10 +151,10 @@ cannot be fooled, as required.
   \node (dots2) at (0,-7) {$\ldots$};
   \node[shape=circle,draw=black] (vn) at (0,-8) {$v_n$};
   \node[shape=circle,draw=black] (s) at (0,-10) {$s$};
-  \path (R) edge node {} (h1);
-  \path (R) edge node {} (h2);
-  \path (R) edge node {} (hH);
-  \path (R) edge node {} (v1);
+  \path (A) edge node {} (h1);
+  \path (A) edge node {} (h2);
+  \path (A) edge node {} (hH);
+  \path (A) edge node {} (v1);
   \path (v1) edge node {} (v2);
   \path (v2) edge node {} (dots1);
   \path (dots1) edge node {} (vi);
@@ -155,7 +170,7 @@ cannot be fooled, as required.
 
 \begin{figure}
 \begin{tikzpicture}
-  \node[shape=circle,draw=black] (R) at (0,0) {R};
+  \node[shape=circle,draw=black] (A) at (0,0) {A};
   \node[shape=circle,draw=black] (h1) at (-1.5,2) {$h_0$};
   \node[shape=circle,draw=black] (h2) at (-0.5,2) {$h_1$};
   \node (dots) at (0.5,2) {$\ldots$};
@@ -176,11 +191,11 @@ cannot be fooled, as required.
   \node[shape=circle,draw=black] (vn2) at (2,-8) {$v_n^{(2)}$};
   \node[shape=circle,draw=black] (s1) at (-2,-10) {$s^{(1)}$};
   \node[shape=circle,draw=black] (s2) at (2,-10) {$s^{(2)}$};
-  \path (R) edge node {} (h1);
-  \path (R) edge node {} (h2);
-  \path (R) edge node {} (hH);
-  \path (R) edge node {} (v11);
-  \path (R) edge node {} (v12);
+  \path (A) edge node {} (h1);
+  \path (A) edge node {} (h2);
+  \path (A) edge node {} (hH);
+  \path (A) edge node {} (v11);
+  \path (A) edge node {} (v12);
   \path (v11) edge node {} (v21);
   \path (v12) edge node {} (v22);
   \path (v21) edge node {} (dots1);
@@ -204,7 +219,7 @@ cannot be fooled, as required.
 
 \begin{figure}
 \begin{tikzpicture}
-  \node[shape=circle,draw=black] (R) at (0,0) {R};
+  \node[shape=circle,draw=black] (A) at (0,0) {A};
   \node[shape=circle,draw=black] (h1) at (-1.5,2) {$h_0$};
   \node[shape=circle,draw=black] (h2) at (-0.5,2) {$h_1$};
   \node (dots) at (0.5,2) {$\ldots$};
@@ -227,12 +242,12 @@ cannot be fooled, as required.
   \node[shape=circle,draw=black] (sR) at (-3,-10) {$s^R$};
   \node[shape=circle,draw=black] (sG) at (0,-10) {$s^G$};
   \node[shape=circle,draw=black] (sB) at (3,-10) {$s^B$};
-  \path (R) edge node {} (h1);
-  \path (R) edge node {} (h2);
-  \path (R) edge node {} (hH);
-  \path (R) edge node {} (v1R);
-  \path (R) edge node {} (v1G);
-  \path (R) edge node {} (v1B);
+  \path (A) edge node {} (h1);
+  \path (A) edge node {} (h2);
+  \path (A) edge node {} (hH);
+  \path (A) edge node {} (v1R);
+  \path (A) edge node {} (v1G);
+  \path (A) edge node {} (v1B);
   \path (v1R) edge node {} (v2R);
   \path (v1G) edge node {} (v2G);
   \path (v1B) edge node {} (v2B);
