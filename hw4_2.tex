@@ -11,27 +11,28 @@ which can be done in polynomial time of the input size using the ellipsoid algor
 
 To prove that MOST NON-NEGATIVE SOLUTION is NP-Complete, we first rephrase the problem be: Given a positive integer $k$ and a system of linear equations $Ax = b$, is there a solution that at most $m-k$ variables are negative. Call the rephrased problem MODIFIED MOST NON-NEGATIVE SOLUTION. We now show a 3SAT problem with $n$ variables and $m$ clauses can be reduced to MODIFIED MOST NON-NEGATIVE SOLUTION which allows at most $n$ negative variables in polynomial time.\\
 
-We construct four variables $x_i$, $\bar{x_i}$, $s_i$ and $\bar{s_i}$ for each literal in 3SAT and one variable $t_j$ for each clause $j$ in 3SAT, where $x_i$ corresponds to the variable and $\bar{x_i}$ correspond to its negation. The variables satisfy the following constraint. 
+We construct four variables $x_i$, $\bar{x_i}$, $s_i$ and $\bar{s_i}$ for each variable in 3SAT and one variable $t_j$ for each clause $j$ in 3SAT. We add the following constraints to $A$ and $b$. 
 \begin{align}
 x_i + \bar{x_i} &= 1 \hspace{5mm} \forall i\\
 x_i - s_i &= 1 \hspace{5mm} \forall i\\
 \bar{x_i} - \bar{s_i} &= 1\hspace{5mm} \forall i\\
 x_a + x_b + x_c - t_j &= 1 \hspace{5mm} \forall j = (x_a\lor x_b \lor x_c)
 \end{align}
-\begin{lemma} At least one of $s_i$ and $\bar{s_i}$ is negative. \end{lemma}
+We are proving that a solution to MODIFIED MOST NON-NEGATIVE SOLUTION problem (MMNNS) returns a satisfying assignment to 3SAT.
+\begin{lemma} At least one of $s_i$ and $\bar{s_i}$ is negative in any solution to the MMNNS problem. \end{lemma}
 \begin{proof} If both $s_i$ and $\bar{s_i}$ are non-negative, then the sum of eq (2) and (3) will violate eq (1). Therefore, at least one of $s_i$ and $\bar{s_i}$ must be negative.\end{proof}
 \begin{lemma} At most one of $s_i$ and $\bar{s_i}$ is negative.\end{lemma}
-\begin{proof} For any feasible candidate to MODIFIED MOST NON-NEGATIVE SOLUTION, it has at most $n$ negative variables. From \textbf{Lemma 1}, we showed that at least one of $s_i$ and $\bar{s_i}$ is negative and there are $n$ pairs of them. Therefore, at most one of $s_i$ and $\bar{s_i}$ is negative. \end{proof}
-\begin{corollary} All variables except $s_i$ and $\bar{s_i}$ must be non-negative for any feasible candidate to MODIFIED MOST NON-NEGATIVE SOLUTION.
+\begin{proof} Any solution to MMNNS problem has at most $n$ negative variables. From \textbf{Lemma 1}, we showed that at least one of $s_i$ and $\bar{s_i}$ is negative; there are $n$ pairs of them. Therefore, at most one of $s_i$ and $\bar{s_i}$ is negative. \end{proof}
+\begin{corollary} All variables except $s_i$ and $\bar{s_i}$ must be non-negative for any solution to MODIFIED MOST NON-NEGATIVE SOLUTION problem.
 \end{corollary}
-\begin{lemma}Exactly one of $x_i$ and $\bar{x_i}$ is 1 and the other is 0.\end{lemma}
+\begin{lemma}Exactly one of $x_i$ and $\bar{x_i}$ is 1 and the other is 0 in any solution to MMNNS.\end{lemma}
 \begin{proof} From \textbf{Lemma 1},  \textbf{Lemma 2} and eq (2) and (3), we know that one of $x_i$ and $\bar{x_i}$ is strictly greater than 1 and the other one is between 0 and 1. From eq (1), we conclude that one of $x_i$ and $\bar{x_i}$ is 1 and the other is 0.\end{proof}
-\begin{lemma} A feasible candidate of MODIFIED MOST NON-NEGATIVE SOLUTION can be decoded into a satisfying truth assignment of 3SAT.\end{lemma}
+\textbf{Backward Direction:} A solution to MODIFIED MOST NON-NEGATIVE SOLUTION can be decoded into a satisfying truth assignment of 3SAT.
 \begin{proof}
 By \textbf{Lemma 3}, we know for any feasible candidate of MODIFIED MOST NON-NEGATIVE SOLUTION, exactly one of $x_i$ and $\bar{x_i}$ is 1. We can assign variable $x_i$  in 3SAT to be true if the corresponding variable $x_i$ in MODIFIED MOST NON-NEGATIVE SOLUTION is 1 or false if $\bar{x_i}$ is 1.\\
-This is a satisfying truth assignment for 3SAT because: (1) each variable is assigned either truth or false but not both; (2) for each clause $j = (x_a \lor x_b \lor x_c)$, at least one of the literals has to have truth assignment, otherwise $t_j$ will be forced to be negative, which contradicts \textbf{Corollary 1}.  
+This is a satisfying truth assignment for 3SAT because: (1) each variable is assigned either truth or false but not both; (2) for each clause $c_j = (x_a \lor x_b \lor x_c)$, at least one of the literals has to have truth assignment, otherwise $t_j$ will be forced to be negative, which contradicts \textbf{Corollary 1}.  
 \end{proof}
-\begin{lemma} A satisfying truth assignment of 3SAT can be transformed into a feasible candidate of MODIFIED MOST NON-NEGATIVE SOLUTION.\end{lemma}
-\begin{proof} Firstly, assign $t_j = 1$ for all clause j. For variable $x_i$ in 3SAT whose value is true, assign $x_i$ in MODIFIED MOST NON-NEGATIVE SOLUTION to be 1 and $\bar{x_i}$ to be 0, otherwise assignment $\bar{x_i}$ to be 1 and $x_i$ to be 0. Correspondingly, we have $s_i = x_i - 1$ and $\bar{s_i} = \bar{x_i} -1$.\\
-This is a feasible candidate to MODIFIED MOST NON-NEGATIVE SOLUTION because all variables are non-negative except $s_i$ and $\bar{s_i}$ and in fact exactly one of the two is negative by construction. Therefore, there are exactly $n$ variables that are negative for this candidate.  
+\textbf{Forward Direction:} A satisfying truth assignment of 3SAT can be transformed into a feasible candidate of MODIFIED MOST NON-NEGATIVE SOLUTION.
+\begin{proof} For variable $x_i$ in 3SAT whose value is true, assign $x_i$ in MODIFIED MOST NON-NEGATIVE SOLUTION to be 1 and $\bar{x_i}$ to be 0, otherwise assignment $\bar{x_i}$ to be 1 and $x_i$ to be 0. Correspondingly, we have $s_i = x_i - 1$ and $\bar{s_i} = \bar{x_i} -1$. The value of $t_j$ is determined by number of truth variable in the clause $t_j=\{0,1,2\}$ $\forall j$. \\
+This is a solution to MODIFIED MOST NON-NEGATIVE SOLUTION because all variables are non-negative except $s_i$ and $\bar{s_i}$ and in fact exactly one of the two is negative by construction. Therefore, there are exactly $n$ variables that are negative for this candidate.  
 \end{proof}
