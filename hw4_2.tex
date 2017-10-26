@@ -1,3 +1,10 @@
 \section*{Problem 2}
 
-STUB FOR PROBLEM 2
+To prove that MOST NON-NEGATIVE SOLUTION is in NP, we need to provide the recipe for a polynomially-sized certificate which can be verified in polynomial time. The certificate is just a set $K$ of $k$ variables which will take non-negative values. Note that the size of the problem in bits is $\text{poly}(n \log U)$ where $U$ is the largest integer (in absolute value) in $A$ or $b$. To verify the certificate we need to verify that there is some $x$ where 
+
+\begin{align*}
+Ax &= b\\
+x_i &\geq b \quad \forall i \in K
+\end{align*}
+
+which can be done in polynomial time of the input size using the ellipsoid algorithm.
