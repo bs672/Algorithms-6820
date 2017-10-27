@@ -33,8 +33,8 @@ For each node v $\in$ V, create a node gadget called {\bf gadget(v)}. If D is th
 \[
 v_i =
     \begin{cases}
-        f(v_i+1) &\quad \text{if $i$ is odd} \\
-        s(v_i+1) &\quad \text{otherwise} \\
+        f(v_i_+_1) &\quad \text{if $i$ is odd} \\
+        s(v_i_+_1) &\quad \text{otherwise} \\
     \end{cases}
 \]
 
@@ -44,15 +44,12 @@ For every edge $(u,v) \in$ E connecting nodes u and v, pick some members $u_a$, 
 
 \textbf{Proof:} This must be true because if the maximum degree is D, then for any node v $\in$ V, the maximum number of edges $(u,v) \in$ E $\leq$ D. Hence, we will need at most D such $v_b$'s. There are exactly D number of odd numbered members in each gadget, hence there will always be a $v_b$ such that b is odd and $j(v_b) = NULL$ for any edge $(e,v) \in$ E. This is symmetrically true for node u.\\
 
-\textbf{Claim:} The FRATERNITY input construction can be done in polynomial time.
+The FRATERNITY input construction can be done in time polynomial to the size of inputs V and E, as it is done in O($|V|$D + $|E|$) time and the maximum degree D $< |E|$\\
 
-\textbf{Proof:} The maximum degree D $< |E|$.
-Creating each node gadget is done in O(D) time. There are $|V|$ such node gadgets. Assigning the f(x) and s(x) relationships is also O(D). Assigning the j(x) relationship can be done in O($|E|$) time. So overall, the construction can be done in time polynomial to the size of inputs V and E.\\
-\\
 We will prove that for any input to IND SET and a correspondingly constructed input to FRATERNITY, an IND SET of size k exists iff a committee of size kD+(D-1)($|V|$-k) exists
 \\
 
-\textbf{Lemma 1:} If an IND SET of size k exists, then FRATERNITY problem committee of size kD + (D-1)($|V|$-k) exists for the correspondingly constructed input
+\textbf{Lemma 1:} If an IND SET of size k exists, then FRATERNITY problem committee of size kD + (D-1)($|V|$-k) exists
 
 \textbf{Proof:}
 Given the IND SET input G=(V,E) and the Independent set S of size k, we choose the committee members as follows:
