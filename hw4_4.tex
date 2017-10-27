@@ -123,9 +123,12 @@ describe a polynomial-time verifier for ``yes'' instances of \tr.
 The input string to the verifier will consist
 of a reconstructed tree $T$ of
 size at most $m$, along with isomorphism functions $\pi_i$ mapping every
-node in each subtree $T_i$ to a node in $T$. Clearly this string
-can be polynomial in length, as in the worst case the size of
-an allowable $T$ is bounded above by the sum of all the subtree sizes,
+node in each subtree $T_i$ to a node in $T$.
+Clearly we can always choose an input string that is polynomial
+in length, as in the worst case of a ``yes''
+instance the smallest valid tree $T$
+will be bounded above in size by $\sum_i{|T_i|}$, where
+$|T_i|$ is the number of vertices in tree $T_i$,
 and the size of each $\pi_i$ is at worst a constant multiple
 of the size of each subtree. The verifier works by first counting
 the number of nodes in $T$ to assert that it is less than $m$,
@@ -133,9 +136,9 @@ running DFS to assert that $T$ is in fact a tree, asserting that
 each $\pi_i$ is a one-to-one function from $V(T_i)$ to $V(T)$,
 and finally asserting that each $T_i$ is a subtree of $T$ one by one,
 by asserting for every $(u, v) \in E(T_i)$ that
-$(\pi_i(u), \pi_i(v)) \in E(T)$. This clearly runs in polynomial time, 
-asserts that $T$ is a valid solution to the problem, and
-cannot be fooled, as required.
+$(\pi_i(u), \pi_i(v)) \in E(T)$. All these steps run in polynomial time,
+together they assert that $T$ is a valid solution to the problem, and
+the verifier cannot be fooled, as required.
 
 
 
