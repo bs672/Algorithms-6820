@@ -69,7 +69,10 @@ Now we will consider the possible ways that $T_S$ could be
 extended to $T$ in order to incorporate the vertex and
 edge gadgets. Since $H$ is so large, the hats of the gadget
 subtrees must be the same as the hat of $T_S$ (else we would
-have to add too many vertices).
+have to add too many vertices; $T$ is a tree so any two nodes
+can have at most one neighbor in common, so if there
+were two vertices of degree $H + 1$ we would have more
+than $m$ vertices in total).
 Each vertex gadget $v_i$ requires
 a path of length $n + 1$ prefixed by $A$, with an extra vertex
 attached to the $(i+1)$'th node in the path. Obviously the
